@@ -1,0 +1,143 @@
+<html>
+  <head>
+    <title>EzNTP</title>
+  </head>
+  <body bgcolor="ffe8ba">
+    <table border=0 cellpadding=1 cellspacing=0 height=32
+      align="center" bgcolor="maroon" width="75%">
+      <tr>
+	<td width="100%">
+	  <table bgcolor="white" width="100%" border=0 height=32
+	    cellpadding=2 cellspacing=0>
+	    <tr>
+	      <td width="100%">
+		<table align="center" bgcolor="black" width="100%" border=0 cellpadding=1 cellspacing=0>
+		  <tr><td>
+		      <table background="./clock_1.jpeg" width="100%">
+			<tr><td>
+			    <center>
+			      <b><font size=6 color="gold">Ez</font><font size=6 color="orange">NTP</font></b>
+			    </center>
+			  </td></tr>
+		      </table>
+		    </td></tr>
+		</table>
+		<br>
+
+		<font size=4 color="maroon">About EzNTP</font><br>
+		<hr color="#336699">
+		<p><font size=2><ul><i>Oh! do not attack me with your watch. A watch is always too fast or too slow. I cannot be dictated to by a watch.</i><ul>- Jane Austen</ul></ul>
+		  EzNTP is a simple and elegant set of programs that provide clock synchronization between two computers. The programs do not require configuration or maintenance. The daemon is multi-threaded, and communications between the hosts are TCP/IP-based. The client software lacks sophistication as it emphasizes accuracy.
+		</font></p>
+
+		<font size=4 color="maroon">News</font><br>
+		<hr color="#336699">
+		<p>
+		<font size=2>
+		  November 26th, 2007.
+		  <ul>
+		    <li>Version 1.8 is now available.</li>
+		  </ul>
+		  November 25th, 2007.
+		  <ul>
+		    <li>Sourceforge is experiencing problems. Version 1.8 files have not yet been uploaded.</li>
+		  </ul> 
+		  November 24th, 2007.
+		  <ul>
+		    <li>Version 1.8 is now available.</li>
+		    <li>The lock files have been replaced with pid files that contain the respective process ids.</li>
+		    <li>Updated the startup scripts so that they conform to Debian standards.</li>
+		    <li>Updated the INSTALL document.</li>
+		    <li>Updated the make files.</li>
+		  </ul>
+		  December 19th, 2006.
+		  <ul>
+		    <li>Version 1.7 has been released. The client has been modified to use settimeofday() if
+			the difference in seconds between the server's clock and the client's clock is
+			greater than or equal to one and adjtime() if the difference in microseconds is greater than or equal to five.</li>
+		  </ul>
+		  December 10th, 2006.
+		  <ul>
+		    <li>Fixed an issue with the daemon. The --disable_all_logs flag now functions as intended.</li>
+		  </ul>
+		  December 8th, 2006.
+		  <ul>
+		    <li>Version 1.6 has been released. Introduced the flag --disable_all_logs.</li>
+		  </ul>
+		  December 4th, 2006.
+		  <ul>
+		    <li>Minor bug fixed. Version remains at 1.5.</li>
+		  </ul>
+		  December 3rd, 2006.
+		  <ul>
+		    <li>Version 1.5 has been released. Introduced the flag --disable_conn_log to prevent logging of failed connect() calls.</li>
+		  </ul>
+		  December 3rd, 2006.
+		  <ul>
+		    <li>Version 1.4 has been released. Some code cleanup. Re-added a sleep after a failed connect() to prevent CPU throttling.</li>
+		  </ul>
+		  December 2nd, 2006.
+		  <ul>
+		    <li>Version 1.3 has been released. Calling settimeofday() at least once.</li>
+		  </ul>
+		  December 1st, 2006.
+		  <ul>
+		    <li>Version 1.2 has been released. Replaced settimeofday() with adjtime().</li>
+		  </ul>		  
+		  September 13th, 2006.
+		  <ul>
+		    <li>/var/run/ez-ntpc.pid and /var/run/ez-ntpd.pid have been replaced by ez-ntpc.lock and ez-ntpd.lock.
+		  </ul>
+		  November 26th, 2005.
+		  <ul>
+		    <li>New option to disable the logging of successful events. Simply add --disable_log to ez-ntpc.sh.
+		  </ul>
+		  September 25th, 2005.
+		  <ul>
+		    <li>Updated the .sh files.
+		  </ul>
+		  August 15th, 2005.
+		  <ul>
+		    <li>Version 1.1 is available. Prevent the client from entering an endless recv() call.
+		  </ul>
+		  August 14th, 2005.
+		  <ul>
+		    <li>Version 1.0 is available for download.
+		  </ul>
+		</font></p>
+
+		<font size=4 color="maroon">EzNTP Requirements</font><br>
+		<hr color=#336699>
+		<p><font size=2>A compiler, editor, and a will to make it work.
+		</font></p>
+
+		<font size=4 color="maroon">Obtaining EzNTP</font><br>
+		<hr color=#336699>
+		<p><font size=2>EzNTP has been tested successfully on a variety of operating systems, including Alpha FreeBSD 4.11, Alpha FreeBSD 5.4, CentOS 4.3, 
+Debian Sparc64 Linux 4.0_r1, FreeBSD 5.4, FreeBSD 5.5, FreeBSD 6.2, Gentoo Sparc64 Linux, Mac OS 10.3.9, Solaris 9, and Solaris 10.
+		  <ul>
+		    <li><a href="http://sourceforge.net/project/showfiles.php?group_id=145745">TAR</a> (MD5 = 5cfef4c433bad4c3b2a53d6d0d654dc3)</li>
+		  </ul>
+		</font></p>
+
+		<font size=4 color="maroon">Support</font><br>
+		<hr color=#336699>
+		<p><font size=2>
+		  Please contact the development <a href="http://sourceforge.net/users/textfield">team</a> if you have any questions regarding this project. You may also <a href="http://sourceforge.net/tracker/?func=add&group_id=145745&atid=762906">submit</a> a trouble ticket if you so desire.
+		</p>
+		</font>
+
+		<font size=4 color="maroon">Miscellaneous</font><br>
+		<hr color=#336699>
+		<p><font size=2>
+		  This project is hosted by the fine folks at Sourceforge.
+		</font></p>
+		<a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=116888&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo"></a>
+	      </td>
+	    </tr>
+	  </table>
+	</td>
+      </tr>
+    </table>
+  </body>
+</html>

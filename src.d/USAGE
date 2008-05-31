@@ -1,0 +1,6 @@
+Client:
+	/usr/local/bin/ez-ntpc -p SERVER_PORT -h SERVER_IP_ADDRESS
+	/usr/local/bin/ez-ntpc -p 50000 -h 193.168.0.1
+
+Server:
+	/usr/local/bin/ez-ntpd
