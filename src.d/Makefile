@@ -5,12 +5,12 @@ standard:
 clean:
 	$(MAKE) -f Makefile.client clean
 	$(MAKE) -f Makefile.daemon clean
-	/bin/rm -f ez-ntpc.core
-	/bin/rm -f ez-ntpd.core
-	/bin/rm -f core
+	rm -f ez-ntpc.core
+	rm -f ez-ntpd.core
+	rm -f core
 
 purge:
-	/bin/rm -f *~
+	rm -f *~
 
 install:
 	$(MAKE) -f Makefile.client install

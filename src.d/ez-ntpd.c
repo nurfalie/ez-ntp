@@ -194,7 +194,7 @@ static void *thread_fun(void *arg)
   if(gettimeofday(&tp, (struct timezone *) NULL) == 0)
     {
       (void) snprintf(wr_buffer, sizeof(wr_buffer),
-		      "%ld,%d\r\n", tp.tv_sec, tp.tv_usec);
+		      "%ld,%ld\r\n", tp.tv_sec, tp.tv_usec);
 
       if((rc = send(fd, wr_buffer, strlen(wr_buffer),
 		    MSG_DONTWAIT | MSG_FIN)) <= 0)
