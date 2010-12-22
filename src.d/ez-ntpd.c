@@ -48,8 +48,8 @@ int main(int argc, char *argv[])
   int rc = 0;
   int conn_fd = -1;
   int tmpint = 0;
-  pthread_t thread = (pthread_t) 0;
-  socklen_t len = (socklen_t) 0;
+  pthread_t thread = 0;
+  socklen_t len = 0;
   struct stat st;
   struct servent *serv = NULL;
   struct sockaddr client;

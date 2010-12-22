@@ -17,7 +17,7 @@
 #include <sys/resource.h>
 #include <netinet/in.h>
 
-#define VERSION 1.8.1
+#define VERSION 1.8.2
 
 int sock_fd = -1;
 int terminated = 0;
@@ -78,7 +78,7 @@ void preconnect_init(void)
     if(disable_all_logs == 0)
       syslog(LOG_ERR, "sigaction() failed, %s", strerror(errno));
 
-  if((fd = open(PIDFILE, O_CREAT | O_WRONLY, S_IRUSR)) == -1)
+  if((fd = open(PIDFILE, O_EXCL | O_CREAT | O_WRONLY, S_IRUSR)) == -1)
     {
       if(disable_all_logs == 0)
 	syslog(LOG_ERR, "open() failed for %s, %s. exiting",
@@ -96,6 +96,7 @@ void preconnect_init(void)
 	    syslog(LOG_ERR, "write() failed for %s, %s. exiting",
 		   PIDFILE, strerror(errno));
 
+	  (void) close(fd);
 	  exit(EXIT_FAILURE);
 	}
     }
@@ -112,7 +113,7 @@ void turn_into_daemon(void)
   int fd0 = 0;
   int fd1 = 0;
   int fd2 = 0;
-  pid_t pid = (pid_t) 0;
+  pid_t pid = 0;
   struct rlimit rl;
 
   /*
