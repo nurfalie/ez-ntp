@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
 {
   int i = 0;
   int port_num = -1;
+  char *tmp = 0;
   char buffer[128];
   char rd_buffer[2];
   char remote_host[128];
@@ -229,8 +230,27 @@ int main(int argc, char *argv[])
 	  continue;
 	}
 
-      server_tp.tv_sec = atol(strtok(buffer, ","));
-      server_tp.tv_usec = atol(strtok(NULL, "\r\n"));
+      tmp = strtok(buffer, ",");
+
+      if(tmp != NULL)
+	server_tp.tv_sec = atol(tmp);
+      else
+	{
+	  (void) close(sock_fd);
+	  sock_fd = -1;
+	  continue;
+	}
+
+      tmp = strtok(NULL, "\r\n");
+
+      if(tmp != NULL)
+	server_tp.tv_usec = atol(tmp);
+      else
+	{
+	  (void) close(sock_fd);
+	  sock_fd = -1;
+	  continue;
+	}
 
       if(gettimeofday(&home_tp, NULL) == 0)
 	{
