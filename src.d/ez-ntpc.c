@@ -29,9 +29,11 @@
 ** -- System Includes --
 */
 
+#include <limits.h>
+#include <stdlib.h>
+#include <arpa/inet.h>
 #include <sys/types.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
 
 /*
 ** -- Local Includes --
@@ -54,6 +56,7 @@ int main(int argc, char *argv[])
   int port_num = -1;
   char *tmp = 0;
   char buffer[128];
+  char *endptr;
   char rd_buffer[2];
   char remote_host[128];
   short goodtime = 0;
@@ -210,7 +213,7 @@ int main(int argc, char *argv[])
 	  else if(rc == -1 && errno == EINTR)
 	    break;
 	  else if(rc == 1 && strlen(buffer) < sizeof(buffer) - 1)
-	    (void) strcat(buffer, rd_buffer);
+	    (void) strncat(buffer, rd_buffer, 1);
 	  else
 	    break;
 
@@ -233,7 +236,24 @@ int main(int argc, char *argv[])
       tmp = strtok(buffer, ",");
 
       if(tmp != NULL)
-	server_tp.tv_sec = atol(tmp);
+	{
+	  server_tp.tv_sec = strtol(tmp, &endptr, 10);
+
+	  if((errno == ERANGE && (server_tp.tv_sec == LONG_MAX ||
+				  server_tp.tv_sec == LONG_MIN)) ||
+	     (errno != 0 && server_tp.tv_sec == 0))
+	    {
+	      (void) close(sock_fd);
+	      sock_fd = -1;
+	      continue;
+	    }
+	  else if(endptr == tmp)
+	    {
+	      (void) close(sock_fd);
+	      sock_fd = -1;
+	      continue;
+	    }
+	}
       else
 	{
 	  (void) close(sock_fd);
@@ -244,7 +264,24 @@ int main(int argc, char *argv[])
       tmp = strtok(NULL, "\r\n");
 
       if(tmp != NULL)
-	server_tp.tv_usec = atol(tmp);
+	{
+	  server_tp.tv_usec = strtol(tmp, &endptr, 10);
+
+	  if((errno == ERANGE && (server_tp.tv_usec == LONG_MAX ||
+				  server_tp.tv_usec == LONG_MIN)) ||
+	     (errno != 0 && server_tp.tv_usec == 0))
+	    {
+	      (void) close(sock_fd);
+	      sock_fd = -1;
+	      continue;
+	    }
+	  else if(endptr == tmp)
+	    {
+	      (void) close(sock_fd);
+	      sock_fd = -1;
+	      continue;
+	    }
+	}
       else
 	{
 	  (void) close(sock_fd);
