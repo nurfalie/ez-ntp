@@ -113,7 +113,10 @@ int main(int argc, char *argv[])
 	argv++;
 
 	if(*argv != NULL)
-	  (void) snprintf(remote_host, sizeof(remote_host), "%s", *argv);
+	  {
+	    (void) memset(remote_host, '\0', sizeof(remote_host));
+	    (void) snprintf(remote_host, sizeof(remote_host), "%s", *argv);
+	  }
 	else
 	  {
 	    if(disable_all_logs == 0)
