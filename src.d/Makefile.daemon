@@ -1,5 +1,5 @@
 GCC		=	gcc
-GCC_OPTIONS	=	-Wall -pedantic
+GCC_OPTIONS	=	-Wall -Wextra -pedantic
 INSTALL		=	install
 INSTALL_OPS	=	-o root -g root
 INSTALL_PATH	=	/usr/local/bin

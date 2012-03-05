@@ -52,6 +52,7 @@ void onexit(void)
 
 void onterm(int notused)
 {
+  (void) notused;
   terminated = 1;
   exit(EXIT_SUCCESS);
 }
@@ -60,6 +61,7 @@ void preconnect_init(void)
 {
   int fd = -1;
   char pidbuf[64];
+  ssize_t pidbuf_len = 0;
   struct sigaction act;
 
   if(atexit(onexit) != 0)
@@ -90,8 +92,9 @@ void preconnect_init(void)
     {
       (void) memset(pidbuf, '\0', sizeof(pidbuf));
       (void) snprintf(pidbuf, sizeof(pidbuf), "%d", getpid());
+      pidbuf_len = strlen(pidbuf);
 
-      if(write(fd, pidbuf, strlen(pidbuf)) != strlen(pidbuf))
+      if(pidbuf_len != write(fd, pidbuf, strlen(pidbuf)))
 	{
 	  if(disable_all_logs == 0)
 	    syslog(LOG_ERR, "write() failed for %s, %s. exiting",
@@ -110,11 +113,11 @@ void preconnect_init(void)
 
 void turn_into_daemon(void)
 {
-  int i = 0;
   int fd0 = 0;
   int fd1 = 0;
   int fd2 = 0;
   pid_t pid = 0;
+  unsigned int i = 0;
   struct rlimit rl;
 
   /*
