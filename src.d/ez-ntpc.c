@@ -47,6 +47,7 @@ void onalarm(int);
 
 void onalarm(int notused)
 {
+  (void) notused;
   return;
 }
 
