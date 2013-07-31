@@ -1,7 +1,7 @@
 GCC		=	gcc
-GCC_OPTIONS	=	-Wall -Wextra -pedantic
+GCC_OPTIONS	=	-Wall -Wextra -Wstack-protector -fPIE -fstack-protector-all -pedantic -pie
 INSTALL		=	install
-INSTALL_OPS	=	-o root -g root
+INSTALL_OPS	=	-o root -g wheel
 INSTALL_PATH	=	/usr/local/bin
 
 standard:	ez-ntpd
