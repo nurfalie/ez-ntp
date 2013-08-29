@@ -326,7 +326,7 @@ int main(int argc, char *argv[])
 
       (void) close(sock_fd);
       sock_fd = -1;
-      (void) sleep(10);
+      (void) sleep(60);
     }
 
   return EXIT_SUCCESS;
