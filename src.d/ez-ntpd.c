@@ -160,7 +160,8 @@ int main(int argc, char *argv[])
 				  thread_fun, (void *) &conn_fd)) != 0)
 	    {
 	      if(disable_all_logs == 0)
-		syslog(LOG_ERR, "pthread_create() failed, error code = %d", rc);
+		syslog
+		  (LOG_ERR, "pthread_create() failed, error code = %d", rc);
 
 	      (void) close(conn_fd);
 	    }
