@@ -17,7 +17,7 @@
 #include <sys/resource.h>
 #include <netinet/in.h>
 
-#define VERSION 1.8.4
+#define VERSION 1.8.5
 
 int sock_fd = -1;
 int terminated = 0;
