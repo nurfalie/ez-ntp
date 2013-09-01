@@ -36,10 +36,10 @@ void onexit(void)
 
   if(sock_fd != -1)
     {
-      if(close(sock_fd) != 0)
+      if(shutdown(sock_fd, SHUT_RDWR) != 0)
 	{
 	  if(disable_all_logs == 0)
-	    syslog(LOG_ERR, "unable to close() the socket, %s",
+	    syslog(LOG_ERR, "unable to shutdown() the socket, %s",
 		   strerror(errno));
 	}
       else
