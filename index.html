@@ -27,13 +27,34 @@
 		<font size=4 color="maroon">About EzNTP</font><br>
 		<hr color="#336699">
 		<p><font size=2><ul><i>Oh! do not attack me with your watch. A watch is always too fast or too slow. I cannot be dictated to by a watch.</i><ul>- Jane Austen</ul></ul>
-		  EzNTP is a simple and elegant set of programs that provide clock synchronization between two computers. The programs do not require configuration or maintenance. The daemon is multi-threaded, and communications between the hosts are TCP/IP-based. The client software lacks sophistication as it emphasizes accuracy.
+		  EzNTP is a set of simple programs that provide clock synchronization between two computers. The programs do not require configuration or maintenance. The daemon portion is multi-threaded. Communications between the hosts are TCP-based. The client software lacks sophistication as it emphasizes accuracy.
 		</font></p>
 
 		<font size=4 color="maroon">News</font><br>
 		<hr color="#336699">
 		<p>
 		<font size=2>
+		  September 3rd, 2013.
+		  <ul>
+		    <li>Version 1.8.5 is now available.</li>
+		    <li>Decreased polling interval of client.</li>
+		  </ul>
+		  March 9th, 2012.
+		  <ul>
+		    <li>Released version 1.8.4.</li>
+		    <li>Corrected warnings.</li>
+		  </ul>
+		  January 13th, 2011.
+		  <ul>
+		    <li>Released version 1.8.3.</li>
+		    <li>Use strtol() instead of atol().</li>
+		    <li>Validate strtok() return values.</li>
+		  </ul>
+		  December 24th, 2010.
+		  <ul>
+		    <li>Version 1.8.2 is now available.</li>
+		    <li>Added O_EXCL to open().</li>
+		  </ul>
 		  September 12th, 2008.
 		  <ul>
 		    <li>Released version 1.8.1.</li>
@@ -47,7 +68,7 @@
 		  November 25th, 2007.
 		  <ul>
 		    <li>Sourceforge is experiencing problems. Version 1.8 files have not yet been uploaded.</li>
-		  </ul>
+		  </ul> 
 		  November 24th, 2007.
 		  <ul>
 		    <li>Version 1.8 is now available.</li>
@@ -89,7 +110,7 @@
 		  December 1st, 2006.
 		  <ul>
 		    <li>Version 1.2 has been released. Replaced settimeofday() with adjtime().</li>
-		  </ul>
+		  </ul>		  
 		  September 13th, 2006.
 		  <ul>
 		    <li>/var/run/ez-ntpc.pid and /var/run/ez-ntpd.pid have been replaced by ez-ntpc.lock and ez-ntpd.lock.
@@ -119,8 +140,7 @@
 
 		<font size=4 color="maroon">Obtaining EzNTP</font><br>
 		<hr color=#336699>
-		<p><font size=2>EzNTP has been tested successfully on a variety of operating systems, including Alpha FreeBSD 4.11, Alpha FreeBSD 5.4, CentOS 4.3, 
-Debian Sparc64 Linux 4.0_r1, FreeBSD 5.4, FreeBSD 5.5, FreeBSD 6.2, Gentoo Sparc64 Linux, Mac OS 10.3.9, Solaris 9, and Solaris 10.
+		<p><font size=2>EzNTP has been tested successfully on a variety of Unix-like operating systems.
 		  <ul>
 		    <li><a href="http://sourceforge.net/project/showfiles.php?group_id=145745">TAR</a></li>
 		  </ul>
