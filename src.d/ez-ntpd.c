@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2005, 2006 Alexis Megas.
+** Copyright (c) 2005, 2006, 2013 Alexis Megas.
 ** All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
   pthread_t thread = 0;
   socklen_t len = 0;
   struct stat st;
-  struct servent *serv = NULL;
+  struct servent *serv = 0;
   struct sockaddr client;
   struct sockaddr_in servaddr;
 
@@ -92,10 +92,10 @@ int main(int argc, char *argv[])
   preconnect_init();
 
   /*
-  ** Attach to a well-known port, and await incoming requests.
+  ** Attach to a well-known port and await incoming requests.
   */
 
-  if((serv = getservbyname("ez-ntp", "tcp")) == NULL)
+  if((serv = getservbyname("ez-ntp", "tcp")) == 0)
     {
       if(disable_all_logs == 0)
 	syslog(LOG_ERR, "ez-ntp not found in /etc/services, exiting");
@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
 
       if((conn_fd = accept(sock_fd, &client, &len)) >= 0)
 	{
-	  if((rc = pthread_create(&thread, (const pthread_attr_t *) NULL,
+	  if((rc = pthread_create(&thread, (const pthread_attr_t *) 0,
 				  thread_fun, (void *) &conn_fd)) != 0)
 	    {
 	      if(disable_all_logs == 0)
@@ -186,15 +186,15 @@ static void *thread_fun(void *arg)
   struct timeval tp;
 
   (void) pthread_detach(pthread_self());
-  (void) memset(wr_buffer, '\0', sizeof(wr_buffer));
+  (void) memset(wr_buffer, 0, sizeof(wr_buffer));
 
   /*
   ** Fetch the time.
   */
 
-  if(gettimeofday(&tp, (struct timezone *) NULL) == 0)
+  if(gettimeofday(&tp, (struct timezone *) 0) == 0)
     {
-      (void) memset(wr_buffer, '\0', sizeof(wr_buffer));
+      (void) memset(wr_buffer, 0, sizeof(wr_buffer));
       (void) snprintf(wr_buffer, sizeof(wr_buffer),
 		      "%lud,%lud\r\n", tp.tv_sec, tp.tv_usec);
 
@@ -207,5 +207,5 @@ static void *thread_fun(void *arg)
     syslog(LOG_ERR, "gettimeofday() failed");
 
   (void) shutdown(fd, SHUT_RDWR);
-  return (void *) NULL;
+  return (void *) 0;
 }

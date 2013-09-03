@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2005, 2006 Alexis Megas.
+** Copyright (c) 2005, 2006, 2013 Alexis Megas.
 ** All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
@@ -92,19 +92,19 @@ int main(int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  (void) memset(remote_host, '\0', sizeof(remote_host));
+  (void) memset(remote_host, 0, sizeof(remote_host));
 
-  for(; *argv != NULL; argv++)
+  for(; *argv != 0; argv++)
     if(strcmp(*argv, "-p") == 0)
       {
 	argv++;
 
-	if(*argv != NULL)
+	if(*argv != 0)
 	  port_num = atoi(*argv);
 	else
 	  {
 	    if(disable_all_logs == 0)
-	      syslog(LOG_ERR, "NULL port, exiting");
+	      syslog(LOG_ERR, "undefined port, exiting");
 
 	    return EXIT_FAILURE;
 	  }
@@ -113,15 +113,15 @@ int main(int argc, char *argv[])
       {
 	argv++;
 
-	if(*argv != NULL)
+	if(*argv != 0)
 	  {
-	    (void) memset(remote_host, '\0', sizeof(remote_host));
+	    (void) memset(remote_host, 0, sizeof(remote_host));
 	    (void) snprintf(remote_host, sizeof(remote_host), "%s", *argv);
 	  }
 	else
 	  {
 	    if(disable_all_logs == 0)
-	      syslog(LOG_ERR, "NULL remote host IP address, exiting");
+	      syslog(LOG_ERR, "undefined remote host IP address, exiting");
 
 	    return EXIT_FAILURE;
 	  }
@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
   (void) sigemptyset(&act.sa_mask);
   act.sa_flags = 0;
 
-  if(sigaction(SIGALRM, &act, (struct sigaction *) NULL) != 0)
+  if(sigaction(SIGALRM, &act, (struct sigaction *) 0) != 0)
     if(disable_all_logs == 0)
       syslog(LOG_ERR, "sigaction() failed, %s", strerror(errno));
 
@@ -206,8 +206,8 @@ int main(int argc, char *argv[])
       if(terminated > 0)
 	break;
 
-      (void) memset(buffer, '\0', sizeof(buffer));
-      (void) memset(rd_buffer, '\0', sizeof(rd_buffer));
+      (void) memset(buffer, 0, sizeof(buffer));
+      (void) memset(rd_buffer, 0, sizeof(rd_buffer));
       (void) alarm(8);
 
       for(goodtime = 0;;)
@@ -221,7 +221,7 @@ int main(int argc, char *argv[])
 	  else
 	    break;
 
-	  if(strstr(buffer, "\r\n") != NULL)
+	  if(strstr(buffer, "\r\n") != 0)
 	    {
 	      goodtime = 1;
 	      break;
@@ -239,7 +239,7 @@ int main(int argc, char *argv[])
 
       tmp = strtok(buffer, ",");
 
-      if(tmp != NULL)
+      if(tmp != 0)
 	{
 	  server_tp.tv_sec = strtol(tmp, &endptr, 10);
 
@@ -265,9 +265,9 @@ int main(int argc, char *argv[])
 	  continue;
 	}
 
-      tmp = strtok(NULL, "\r\n");
+      tmp = strtok(0, "\r\n");
 
-      if(tmp != NULL)
+      if(tmp != 0)
 	{
 	  server_tp.tv_usec = strtol(tmp, &endptr, 10);
 
@@ -293,11 +293,11 @@ int main(int argc, char *argv[])
 	  continue;
 	}
 
-      if(gettimeofday(&home_tp, NULL) == 0)
+      if(gettimeofday(&home_tp, 0) == 0)
 	{
 	  if(abs(server_tp.tv_sec - home_tp.tv_sec) >= 1)
 	    {
-	      if(settimeofday(&server_tp, NULL) != 0)
+	      if(settimeofday(&server_tp, 0) != 0)
 		{
 		  if(disable_all_logs == 0)
 		    syslog(LOG_ERR, "settimeofday() failed, %s",
@@ -311,7 +311,7 @@ int main(int argc, char *argv[])
 	      delta_tp.tv_sec = server_tp.tv_sec - home_tp.tv_sec;
 	      delta_tp.tv_usec = server_tp.tv_usec - home_tp.tv_usec;
 
-	      if(adjtime(&delta_tp, NULL) != 0)
+	      if(adjtime(&delta_tp, 0) != 0)
 		{
 		  if(disable_all_logs == 0)
 		    syslog(LOG_ERR, "adjtime() failed, %s",
