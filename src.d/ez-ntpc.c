@@ -190,9 +190,13 @@ int main(int argc, char *argv[])
 	  (void) sleep(15);
 	}
 
+      (void) alarm(8);
+
       if(connect(sock_fd, (const struct sockaddr *) &servaddr,
 		 sizeof(servaddr)) == -1)
 	{
+	  (void) alarm(0);
+
 	  if(disable_conn_log == 0 && disable_all_logs == 0)
 	    syslog(LOG_ERR, "connect() failed, %s. "
 		   "trying again in 15 seconds", strerror(errno));
