@@ -215,25 +215,25 @@ int main(int argc, char *argv[])
 
       for(goodtime = 0;;)
 	{
-	  if(strlen(buffer) > 2 &&
-	     strstr(buffer, "\r\n") != 0)
+	  if(strlen(buffer) > 2 && strstr(buffer, "\r\n") != 0)
+	    break;
+
+	  if((rc = recv(sock_fd, rd_buffer, sizeof(rd_buffer), MSG_PEEK)) > 0)
 	    {
-	      goodtime = 1;
-	      break;
+	      (void) alarm(8);
+	      (void) memset(rd_buffer, 0, sizeof(rd_buffer));
+	      rc = recv(sock_fd, rd_buffer, rc, MSG_WAITALL);
+	      (void) alarm(0);
 	    }
 
-	  (void) alarm(8);
-	  (void) memset(rd_buffer, 0, sizeof(rd_buffer));
-	  rc = recv(sock_fd, rd_buffer, sizeof(rd_buffer), MSG_WAITALL);
-	  (void) alarm(0);
-
-	  if(rc == -1 && errno == EINTR)
-	    break;
-	  else if(rc > 0 && strlen(buffer) < sizeof(buffer) - 1)
+	  if(rc > 0 && strlen(buffer) < sizeof(buffer) - 1)
 	    (void) strncat(buffer, rd_buffer, rc);
 	  else
 	    break;
 	}
+
+      if(strlen(buffer) > 2 && strstr(buffer, "\r\n") != 0)
+	goodtime = 1;
 
       if(goodtime == 0)
 	{
