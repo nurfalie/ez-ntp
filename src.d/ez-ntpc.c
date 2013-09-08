@@ -202,6 +202,7 @@ int main(int argc, char *argv[])
 		   "trying again in 15 seconds", strerror(errno));
 
 	  (void) shutdown(sock_fd, SHUT_RDWR);
+	  (void) close(sock_fd);
 	  sock_fd = -1;
 	  (void) sleep(15);
 	  continue;
@@ -235,6 +236,7 @@ int main(int argc, char *argv[])
       if(goodtime == 0)
 	{
 	  (void) shutdown(sock_fd, SHUT_RDWR);
+	  (void) close(sock_fd);
 	  sock_fd = -1;
 	  continue;
 	}
@@ -250,12 +252,14 @@ int main(int argc, char *argv[])
 	     (errno != 0 && server_tp.tv_sec == 0))
 	    {
 	      (void) shutdown(sock_fd, SHUT_RDWR);
+	      (void) close(sock_fd);
 	      sock_fd = -1;
 	      continue;
 	    }
 	  else if(endptr == tmp)
 	    {
 	      (void) shutdown(sock_fd, SHUT_RDWR);
+	      (void) close(sock_fd);
 	      sock_fd = -1;
 	      continue;
 	    }
@@ -263,6 +267,7 @@ int main(int argc, char *argv[])
       else
 	{
 	  (void) shutdown(sock_fd, SHUT_RDWR);
+	  (void) close(sock_fd);
 	  sock_fd = -1;
 	  continue;
 	}
@@ -278,12 +283,14 @@ int main(int argc, char *argv[])
 	     (errno != 0 && server_tp.tv_usec == 0))
 	    {
 	      (void) shutdown(sock_fd, SHUT_RDWR);
+	      (void) close(sock_fd);
 	      sock_fd = -1;
 	      continue;
 	    }
 	  else if(endptr == tmp)
 	    {
 	      (void) shutdown(sock_fd, SHUT_RDWR);
+	      (void) close(sock_fd);
 	      sock_fd = -1;
 	      continue;
 	    }
@@ -291,6 +298,7 @@ int main(int argc, char *argv[])
       else
 	{
 	  (void) shutdown(sock_fd, SHUT_RDWR);
+	  (void) close(sock_fd);
 	  sock_fd = -1;
 	  continue;
 	}
@@ -327,6 +335,7 @@ int main(int argc, char *argv[])
 	syslog(LOG_ERR, "gettimeofday() failed, %s", strerror(errno));
 
       (void) shutdown(sock_fd, SHUT_RDWR);
+      (void) close(sock_fd);
       sock_fd = -1;
       (void) sleep(60);
     }

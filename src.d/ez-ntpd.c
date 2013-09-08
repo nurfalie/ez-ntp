@@ -164,6 +164,7 @@ int main(int argc, char *argv[])
 		  (LOG_ERR, "pthread_create() failed, error code = %d", rc);
 
 	      (void) shutdown(conn_fd, SHUT_RDWR);
+	      (void) close(conn_fd);
 	    }
 	}
       else
@@ -206,5 +207,6 @@ static void *thread_fun(void *arg)
     syslog(LOG_ERR, "gettimeofday() failed");
 
   (void) shutdown(fd, SHUT_RDWR);
+  (void) close(fd);
   return (void *) 0;
 }

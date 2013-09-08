@@ -42,8 +42,9 @@ void onexit(void)
 	    syslog(LOG_ERR, "unable to shutdown() the socket, %s",
 		   strerror(errno));
 	}
-      else
-	sock_fd = -1;
+
+      (void) close(sock_fd);
+      sock_fd = -1;
     }
 
   if(disable_all_logs == 0)
