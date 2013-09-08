@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
   char *tmp = 0;
   char buffer[128];
   char *endptr;
-  char rd_buffer[2];
+  char rd_buffer[16];
   char remote_host[128];
   short goodtime = 0;
   short disable_log = 0;
@@ -211,28 +211,26 @@ int main(int argc, char *argv[])
 	break;
 
       (void) memset(buffer, 0, sizeof(buffer));
-      (void) memset(rd_buffer, 0, sizeof(rd_buffer));
-      (void) alarm(8);
 
       for(goodtime = 0;;)
 	{
-	  if((rc = recv(sock_fd, rd_buffer, 1, MSG_WAITALL)) == 0)
-	    (void) sleep(1);
-	  else if(rc == -1 && errno == EINTR)
-	    break;
-	  else if(rc == 1 && strlen(buffer) < sizeof(buffer) - 1)
-	    (void) strncat(buffer, rd_buffer, 1);
-	  else
-	    break;
+	  (void) memset(rd_buffer, 0, sizeof(rd_buffer));
+	  rc = recv(sock_fd, rd_buffer, sizeof(rd_buffer), MSG_DONTWAIT);
 
-	  if(strstr(buffer, "\r\n") != 0)
+	  if(strlen(buffer) > 2 &&
+	     strstr(buffer, "\r\n") != 0)
 	    {
 	      goodtime = 1;
 	      break;
 	    }
-	}
 
-      (void) alarm(0);
+	  if(rc == -1 && errno == EINTR)
+	    break;
+	  else if(rc > 0 && strlen(buffer) < sizeof(buffer) - 1)
+	    (void) strncat(buffer, rd_buffer, rc);
+	  else
+	    break;
+	}
 
       if(goodtime == 0)
 	{

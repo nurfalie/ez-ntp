@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
   ** Start accepting connections.
   */
 
-  if(listen(sock_fd, 10) != 0)
+  if(listen(sock_fd, SOMAXCONN) != 0)
     {
       if(disable_all_logs == 0)
 	syslog(LOG_ERR, "listen() failed, %s. exiting", strerror(errno));
@@ -182,7 +182,7 @@ static void *thread_fun(void *arg)
 {
   int fd = *((int *) arg);
   int rc = 0;
-  char wr_buffer[64];
+  char wr_buffer[128];
   struct timeval tp;
 
   (void) pthread_detach(pthread_self());
@@ -198,8 +198,7 @@ static void *thread_fun(void *arg)
       (void) snprintf(wr_buffer, sizeof(wr_buffer),
 		      "%lud,%lud\r\n", tp.tv_sec, tp.tv_usec);
 
-      if((rc = send(fd, wr_buffer, strlen(wr_buffer),
-		    MSG_DONTWAIT | MSG_FIN)) <= 0)
+      if((rc = send(fd, wr_buffer, strlen(wr_buffer), MSG_DONTWAIT)) <= 0)
 	if(disable_all_logs == 0)
 	  syslog(LOG_ERR, "send() failed, error code = %d", rc);
     }
