@@ -215,15 +215,17 @@ int main(int argc, char *argv[])
 
       for(goodtime = 0;;)
 	{
-	  (void) memset(rd_buffer, 0, sizeof(rd_buffer));
-	  rc = recv(sock_fd, rd_buffer, sizeof(rd_buffer), MSG_DONTWAIT);
-
 	  if(strlen(buffer) > 2 &&
 	     strstr(buffer, "\r\n") != 0)
 	    {
 	      goodtime = 1;
 	      break;
 	    }
+
+	  (void) alarm(8);
+	  (void) memset(rd_buffer, 0, sizeof(rd_buffer));
+	  rc = recv(sock_fd, rd_buffer, sizeof(rd_buffer), MSG_WAITALL);
+	  (void) alarm(0);
 
 	  if(rc == -1 && errno == EINTR)
 	    break;
