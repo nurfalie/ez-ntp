@@ -163,7 +163,6 @@ int main(int argc, char *argv[])
 		syslog
 		  (LOG_ERR, "pthread_create() failed, error code = %d", rc);
 
-	      (void) shutdown(conn_fd, SHUT_RDWR);
 	      (void) close(conn_fd);
 	    }
 	}
@@ -182,8 +181,8 @@ int main(int argc, char *argv[])
 static void *thread_fun(void *arg)
 {
   int fd = *((int *) arg);
-  int rc = 0;
   char wr_buffer[128];
+  ssize_t rc = 0;
   struct timeval tp;
 
   (void) pthread_detach(pthread_self());
@@ -198,15 +197,22 @@ static void *thread_fun(void *arg)
       (void) memset(wr_buffer, 0, sizeof(wr_buffer));
       (void) snprintf(wr_buffer, sizeof(wr_buffer),
 		      "%lud,%lud\r\n", tp.tv_sec, tp.tv_usec);
+      rc = send(fd, wr_buffer, strlen(wr_buffer), MSG_DONTWAIT);
 
-      if((rc = send(fd, wr_buffer, strlen(wr_buffer), MSG_DONTWAIT)) <= 0)
-	if(disable_all_logs == 0)
-	  syslog(LOG_ERR, "send() failed, error code = %d", rc);
+      if(rc > 0)
+	if(rc != (ssize_t) strlen(wr_buffer)) /*
+					      ** wr_buffer will never, ever
+					      ** contain more than SSIZE_MAX
+					      ** bytes.
+					      */
+	  syslog(LOG_ERR, "not all data sent on send()");
     }
   else if(disable_all_logs == 0)
     syslog(LOG_ERR, "gettimeofday() failed");
 
-  (void) shutdown(fd, SHUT_RDWR);
-  (void) close(fd);
+  if(close(fd) != 0)
+    if(disable_all_logs == 0)
+      syslog(LOG_ERR, "close() failed");
+
   return (void *) 0;
 }

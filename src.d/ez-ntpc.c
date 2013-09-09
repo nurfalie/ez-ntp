@@ -201,7 +201,6 @@ int main(int argc, char *argv[])
 	    syslog(LOG_ERR, "connect() failed, %s. "
 		   "trying again in 15 seconds", strerror(errno));
 
-	  (void) shutdown(sock_fd, SHUT_RDWR);
 	  (void) close(sock_fd);
 	  sock_fd = -1;
 	  (void) sleep(15);
@@ -237,7 +236,6 @@ int main(int argc, char *argv[])
 
       if(goodtime == 0)
 	{
-	  (void) shutdown(sock_fd, SHUT_RDWR);
 	  (void) close(sock_fd);
 	  sock_fd = -1;
 	  continue;
@@ -253,14 +251,12 @@ int main(int argc, char *argv[])
 				  server_tp.tv_sec == LONG_MIN)) ||
 	     (errno != 0 && server_tp.tv_sec == 0))
 	    {
-	      (void) shutdown(sock_fd, SHUT_RDWR);
 	      (void) close(sock_fd);
 	      sock_fd = -1;
 	      continue;
 	    }
 	  else if(endptr == tmp)
 	    {
-	      (void) shutdown(sock_fd, SHUT_RDWR);
 	      (void) close(sock_fd);
 	      sock_fd = -1;
 	      continue;
@@ -268,7 +264,6 @@ int main(int argc, char *argv[])
 	}
       else
 	{
-	  (void) shutdown(sock_fd, SHUT_RDWR);
 	  (void) close(sock_fd);
 	  sock_fd = -1;
 	  continue;
@@ -284,14 +279,12 @@ int main(int argc, char *argv[])
 				  server_tp.tv_usec == LONG_MIN)) ||
 	     (errno != 0 && server_tp.tv_usec == 0))
 	    {
-	      (void) shutdown(sock_fd, SHUT_RDWR);
 	      (void) close(sock_fd);
 	      sock_fd = -1;
 	      continue;
 	    }
 	  else if(endptr == tmp)
 	    {
-	      (void) shutdown(sock_fd, SHUT_RDWR);
 	      (void) close(sock_fd);
 	      sock_fd = -1;
 	      continue;
@@ -299,7 +292,6 @@ int main(int argc, char *argv[])
 	}
       else
 	{
-	  (void) shutdown(sock_fd, SHUT_RDWR);
 	  (void) close(sock_fd);
 	  sock_fd = -1;
 	  continue;
@@ -336,7 +328,6 @@ int main(int argc, char *argv[])
       else if(disable_all_logs == 0)
 	syslog(LOG_ERR, "gettimeofday() failed, %s", strerror(errno));
 
-      (void) shutdown(sock_fd, SHUT_RDWR);
       (void) close(sock_fd);
       sock_fd = -1;
       (void) sleep(60);
