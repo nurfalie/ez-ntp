@@ -182,11 +182,21 @@ static void *thread_fun(void *arg)
 {
   int fd = *((int *) arg);
   char wr_buffer[128];
+  socklen_t length = 0;
   ssize_t rc = 0;
+  struct linger linger;
   struct timeval tp;
 
   (void) pthread_detach(pthread_self());
   (void) memset(wr_buffer, 0, sizeof(wr_buffer));
+  linger.l_onoff = 1;
+  linger.l_linger = 0;
+  length = sizeof(linger);
+
+  if(setsockopt(fd, SOL_SOCKET, SO_LINGER, (const void *) &linger,
+		length) != 0)
+    if(disable_all_logs == 0)
+      syslog(LOG_ERR, "setsockopt() failed, %s", strerror(errno));
 
   /*
   ** Fetch the time.
