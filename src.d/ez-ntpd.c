@@ -200,19 +200,25 @@ static void *thread_fun(void *arg)
       rc = send(fd, wr_buffer, strlen(wr_buffer), MSG_DONTWAIT);
 
       if(rc > 0)
-	if(rc != (ssize_t) strlen(wr_buffer)) /*
-					      ** wr_buffer will never, ever
-					      ** contain more than SSIZE_MAX
-					      ** bytes.
-					      */
-	  syslog(LOG_ERR, "not all data sent on send()");
+	{
+	  if(rc != (ssize_t) strlen(wr_buffer)) /*
+						** wr_buffer will never, ever
+						** contain more than SSIZE_MAX
+						** bytes.
+						*/
+	    if(disable_all_logs == 0)
+	      syslog(LOG_ERR, "not all data sent on send()");
+	}
+      else if(rc == -1)
+	if(disable_all_logs == 0)
+	  syslog(LOG_ERR, "send() failed, %s", strerror(errno));
     }
   else if(disable_all_logs == 0)
-    syslog(LOG_ERR, "gettimeofday() failed");
+    syslog(LOG_ERR, "gettimeofday() failed, %s", strerror(errno));
 
   if(close(fd) != 0)
     if(disable_all_logs == 0)
-      syslog(LOG_ERR, "close() failed");
+      syslog(LOG_ERR, "close() failed, %s", strerror(errno));
 
   return (void *) 0;
 }

@@ -61,8 +61,6 @@ int main(int argc, char *argv[])
   char rd_buffer[16];
   char remote_host[128];
   short goodtime = 0;
-  short disable_log = 0;
-  short disable_conn_log = 0;
   ssize_t rc = 0;
   struct stat st;
   struct timeval home_tp;
@@ -126,10 +124,6 @@ int main(int argc, char *argv[])
 	    return EXIT_FAILURE;
 	  }
       }
-    else if(strcmp(*argv, "--disable_log") == 0)
-      disable_log = 1;
-    else if(strcmp(*argv, "--disable_conn_log") == 0)
-      disable_conn_log = 1;
 
   if(port_num == -1 || strlen(remote_host) == 0)
     {
@@ -197,7 +191,7 @@ int main(int argc, char *argv[])
 	{
 	  (void) alarm(0);
 
-	  if(disable_conn_log == 0 && disable_all_logs == 0)
+	  if(disable_all_logs == 0)
 	    syslog(LOG_ERR, "connect() failed, %s. "
 		   "trying again in 15 seconds", strerror(errno));
 
@@ -307,7 +301,7 @@ int main(int argc, char *argv[])
 		    syslog(LOG_ERR, "settimeofday() failed, %s",
 			   strerror(errno));
 		}
-	      else if(disable_log == 0 && disable_all_logs == 0)
+	      else if(disable_all_logs == 0)
 		syslog(LOG_INFO, "adjusted system time");
 	    }
 	  else if(abs(server_tp.tv_usec - home_tp.tv_usec) >= 5)
@@ -321,7 +315,7 @@ int main(int argc, char *argv[])
 		    syslog(LOG_ERR, "adjtime() failed, %s",
 			   strerror(errno));
 		}
-	      else if(disable_log == 0 && disable_all_logs == 0)
+	      else if(disable_all_logs == 0)
 		syslog(LOG_INFO, "adjusted system time");
 	    }
 	}

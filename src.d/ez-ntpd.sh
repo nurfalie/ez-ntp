@@ -9,7 +9,7 @@ start)
 	fi
 
 	echo "Starting the EzNTP daemon."
-	/usr/local/bin/ez-ntpd --disable_all_logs
+	/usr/local/bin/ez-ntpd
 	;;
 stop)
         if [ ! -e /var/run/ez-ntpd.pid ]
