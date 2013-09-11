@@ -205,8 +205,10 @@ static void *thread_fun(void *arg)
   if(gettimeofday(&tp, (struct timezone *) 0) == 0)
     {
       (void) memset(wr_buffer, 0, sizeof(wr_buffer));
-      (void) snprintf(wr_buffer, sizeof(wr_buffer),
-		      "%lud,%lud\r\n", tp.tv_sec, tp.tv_usec);
+      (void) snprintf
+	(wr_buffer, sizeof(wr_buffer), "%lud,%lud\r\n",
+	 (long unsigned int) tp.tv_sec,
+	 (long unsigned int) tp.tv_usec);
       rc = send(fd, wr_buffer, strlen(wr_buffer), MSG_DONTWAIT);
 
       if(rc > 0)
