@@ -10,10 +10,10 @@
 #include <syslog.h>
 #include <unistd.h>
 #include <strings.h>
+#include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
-#include <linux/socket.h>
 #include <sys/resource.h>
 #include <netinet/in.h>
 
