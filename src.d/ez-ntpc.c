@@ -243,8 +243,7 @@ int main(int argc, char *argv[])
 	{
 	  server_tp.tv_sec = strtol(tmp, &endptr, 10);
 
-	  if(errno == EINVAL || errno == ERANGE || (errno != 0 &&
-						    server_tp.tv_sec == 0))
+	  if(errno == EINVAL || errno == ERANGE)
 	    {
 	      (void) close(sock_fd);
 	      sock_fd = -1;
@@ -270,8 +269,7 @@ int main(int argc, char *argv[])
 	{
 	  server_tp.tv_usec = strtol(tmp, &endptr, 10);
 
-	  if(errno == EINVAL || errno == ERANGE || (errno != 0 &&
-						    server_tp.tv_usec == 0))
+	  if(errno == EINVAL || errno == ERANGE)
 	    {
 	      (void) close(sock_fd);
 	      sock_fd = -1;
