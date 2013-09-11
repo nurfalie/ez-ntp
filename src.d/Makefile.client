@@ -9,7 +9,7 @@ standard:	ez-ntpc
 INCLUDES	=	ez-common.h
 INCLUDE_PATH	=	-I/usr/include -I/usr/local/include -I.
 SRC		=	ez-ntpc.c
-LIBS		=
+LIBS		=	-lm
 
 ez-ntpc:	$(SRC) $(INCLUDES)
 		$(GCC) $(GCC_OPTIONS) $(INCLUDE_PATH) -o ez-ntpc \

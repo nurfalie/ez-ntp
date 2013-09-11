@@ -29,11 +29,12 @@
 ** -- System Includes --
 */
 
-#include <limits.h>
-#include <stdlib.h>
 #include <arpa/inet.h>
-#include <sys/types.h>
+#include <limits.h>
+#include <math.h>
 #include <netinet/in.h>
+#include <stdlib.h>
+#include <sys/types.h>
 
 /*
 ** -- Local Includes --
@@ -219,8 +220,9 @@ int main(int argc, char *argv[])
 	      (void) alarm(0);
 	    }
 
-	  if(rc > 0 && strlen(buffer) < sizeof(buffer) - 1)
-	    (void) strncat(buffer, rd_buffer, rc);
+	  if(rc > 0)
+	    (void) strncat(buffer, rd_buffer,
+			   fmin(rc, sizeof(buffer) - strlen(buffer) - 1));
 	  else
 	    break;
 	}
