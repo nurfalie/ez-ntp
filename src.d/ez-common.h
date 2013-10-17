@@ -208,8 +208,7 @@ void turn_into_daemon(void)
     rl.rlim_max = 2048;
 
   for(i = 0; i < rl.rlim_max; i++)
-    if(!(i == 0 || i == 1 || i == 2))
-      (void) close(i);
+    (void) close(i);
 
   fd0 = open("/dev/null", O_RDWR);
   fd1 = dup(0);
