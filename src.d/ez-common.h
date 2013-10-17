@@ -29,18 +29,32 @@ void turn_into_daemon(void);
 
 void onexit(void)
 {
+  int err = 0;
+
   if(remove(PIDFILE) != 0)
-    if(disable_all_logs == 0)
-      syslog(LOG_ERR, "unable to remove() %s, %s", PIDFILE,
-	     strerror(errno));
+    {
+      err = errno;
+
+      if(disable_all_logs == 0)
+	syslog(LOG_ERR, "unable to remove() %s, %s", PIDFILE,
+	       strerror(err));
+
+      fprintf(stderr, "Unable to remove() %s, %s.\n", PIDFILE,
+	      strerror(err));
+    }
 
   if(sock_fd != -1)
     {
       if(close(sock_fd) != 0)
 	{
+	  err = errno;
+
 	  if(disable_all_logs == 0)
 	    syslog(LOG_ERR, "unable to close() the socket, %s",
-		   strerror(errno));
+		   strerror(err));
+
+	  fprintf(stderr, "Unable to close() the socket, %s.\n",
+		  strerror(err));
 	}
 
       sock_fd = -1;
@@ -59,14 +73,21 @@ void onterm(int notused)
 
 void preconnect_init(void)
 {
+  int err = 0;
   int fd = -1;
   char pidbuf[64];
   ssize_t pidbuf_len = 0;
   struct sigaction act;
 
   if(atexit(onexit) != 0)
-    if(disable_all_logs == 0)
-      syslog(LOG_ERR, "atexit() failed, %s", strerror(errno));
+    {
+      err = errno;
+
+      if(disable_all_logs == 0)
+	syslog(LOG_ERR, "atexit() failed, %s", strerror(err));
+
+      fprintf(stderr, "atexit() failed, %s.\n", strerror(err));
+    }
 
   /*
   ** Configure a handler for the SIGTERM signal.
@@ -77,15 +98,25 @@ void preconnect_init(void)
   act.sa_flags = 0;
 
   if(sigaction(SIGTERM, &act, (struct sigaction *) NULL) != 0)
-    if(disable_all_logs == 0)
-      syslog(LOG_ERR, "sigaction() failed, %s", strerror(errno));
+    {
+      err = errno;
+
+      if(disable_all_logs == 0)
+	syslog(LOG_ERR, "sigaction() failed, %s", strerror(err));
+
+      fprintf(stderr, "sigaction() failed, %s.\n", strerror(err));
+    }
 
   if((fd = open(PIDFILE, O_EXCL | O_CREAT | O_WRONLY, S_IRUSR)) == -1)
     {
-      if(disable_all_logs == 0)
-	syslog(LOG_ERR, "open() failed for %s, %s. exiting",
-	       PIDFILE, strerror(errno));
+      err = errno;
 
+      if(disable_all_logs == 0)
+	syslog(LOG_ERR, "open() failed for %s, %s, exiting",
+	       PIDFILE, strerror(err));
+
+      fprintf(stderr, "open() failed for %s, %s, exiting.\n",
+	      PIDFILE, strerror(err));
       exit(EXIT_FAILURE);
     }
   else
@@ -96,23 +127,35 @@ void preconnect_init(void)
 
       if(pidbuf_len != write(fd, pidbuf, strlen(pidbuf)))
 	{
-	  if(disable_all_logs == 0)
-	    syslog(LOG_ERR, "write() failed for %s, %s. exiting",
-		   PIDFILE, strerror(errno));
+	  err = errno;
 
+	  if(disable_all_logs == 0)
+	    syslog(LOG_ERR, "write() failed for %s, %s, exiting",
+		   PIDFILE, strerror(err));
+
+	  fprintf(stderr, "write() failed for %s, %s, exiting.\n",
+		  PIDFILE, strerror(err));
 	  (void) close(fd);
 	  exit(EXIT_FAILURE);
 	}
     }
 
   if(close(fd) != 0)
-    if(disable_all_logs == 0)
-      syslog(LOG_ERR, "close() failed for %d (%s), %s", fd, PIDFILE,
-	     strerror(errno));
+    {
+      err = errno;
+
+      if(disable_all_logs == 0)
+	syslog(LOG_ERR, "close() failed for %d (%s), %s", fd, PIDFILE,
+	       strerror(err));
+
+      fprintf(stderr, "close() failed for %d (%s), %s.\n", fd, PIDFILE,
+	      strerror(err));
+    }
 }
 
 void turn_into_daemon(void)
 {
+  int err = 0;
   int fd0 = 0;
   int fd1 = 0;
   int fd2 = 0;
@@ -126,9 +169,12 @@ void turn_into_daemon(void)
 
   if(getrlimit(RLIMIT_NOFILE, &rl) != 0)
     {
-      if(disable_all_logs == 0)
-	syslog(LOG_ERR, "getrlimit() failed, %s. exiting", strerror(errno));
+      err = errno;
 
+      if(disable_all_logs == 0)
+	syslog(LOG_ERR, "getrlimit() failed, %s, exiting", strerror(err));
+
+      fprintf(stderr, "getrlimit() failed, %s, exiting.\n", strerror(err));
       exit(EXIT_FAILURE);
     }
 
@@ -139,6 +185,7 @@ void turn_into_daemon(void)
       if(disable_all_logs == 0)
 	syslog(LOG_ERR, "fork() failed, exiting");
 
+      fprintf(stderr, "fork() failed, exiting.\n");
       exit(EXIT_FAILURE);
     }
   else if(pid != 0)
@@ -148,9 +195,12 @@ void turn_into_daemon(void)
 
   if(chdir("/") != 0)
     {
-      if(disable_all_logs == 0)
-	syslog(LOG_ERR, "chdir() failed, %s. exiting", strerror(errno));
+      err = errno;
 
+      if(disable_all_logs == 0)
+	syslog(LOG_ERR, "chdir() failed, %s, exiting", strerror(err));
+
+      fprintf(stderr, "chdir() failed, %s, exiting.\n", strerror(err));
       exit(EXIT_FAILURE);
     }
 
@@ -158,7 +208,8 @@ void turn_into_daemon(void)
     rl.rlim_max = 2048;
 
   for(i = 0; i < rl.rlim_max; i++)
-    (void) close(i);
+    if(!(i == 0 || i == 1 || i == 2))
+      (void) close(i);
 
   fd0 = open("/dev/null", O_RDWR);
   fd1 = dup(0);
@@ -167,9 +218,11 @@ void turn_into_daemon(void)
   if(fd0 != 0 || fd1 != 1 || fd2 != 2)
     {
       if(disable_all_logs == 0)
-	syslog(LOG_ERR, "incorrect file descriptors: %d, %d, %d. exiting",
+	syslog(LOG_ERR, "incorrect file descriptors: %d, %d, %d, exiting",
 	       fd0, fd1, fd2);
 
+      fprintf(stderr, "incorrect file descriptors: %d, %d, %d, exiting.\n",
+	      fd0, fd1, fd2);
       exit(EXIT_FAILURE);
     }
 

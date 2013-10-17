@@ -54,6 +54,7 @@ void onalarm(int notused)
 
 int main(int argc, char *argv[])
 {
+  int err = 0;
   int i = 0;
   int port_num = -1;
   char *tmp = 0;
@@ -88,6 +89,7 @@ int main(int argc, char *argv[])
       if(disable_all_logs == 0)
 	syslog(LOG_ERR, "%s already exists, exiting", PIDFILE);
 
+      fprintf(stderr, "%s already exists, exiting.\n", PIDFILE);
       return EXIT_FAILURE;
     }
 
@@ -105,6 +107,7 @@ int main(int argc, char *argv[])
 	    if(disable_all_logs == 0)
 	      syslog(LOG_ERR, "undefined port, exiting");
 
+	    fprintf(stderr, "Undefined port, exiting.\n");
 	    return EXIT_FAILURE;
 	  }
       }
@@ -122,6 +125,7 @@ int main(int argc, char *argv[])
 	    if(disable_all_logs == 0)
 	      syslog(LOG_ERR, "undefined remote host IP address, exiting");
 
+	    fprintf(stderr, "Undefined remote host IP address, exiting.");
 	    return EXIT_FAILURE;
 	  }
       }
@@ -132,6 +136,8 @@ int main(int argc, char *argv[])
 	syslog(LOG_ERR, "missing remote port number or remote hostname, "
 	       "exiting");
 
+      fprintf(stderr, "Missing remote port number or remote hostname, "
+	      "exiting.\n");
       return EXIT_FAILURE;
     }
 
@@ -162,8 +168,14 @@ int main(int argc, char *argv[])
   act.sa_flags = 0;
 
   if(sigaction(SIGALRM, &act, (struct sigaction *) 0) != 0)
-    if(disable_all_logs == 0)
-      syslog(LOG_ERR, "sigaction() failed, %s", strerror(errno));
+    {
+      err = errno;
+
+      if(disable_all_logs == 0)
+	syslog(LOG_ERR, "sigaction() failed, %s", strerror(err));
+
+      fprintf(stderr, "sigaction() failed, %s.\n", strerror(err));
+    }
 
   /*
   ** Establish a connection to the remote host.
@@ -179,7 +191,7 @@ int main(int argc, char *argv[])
       while((sock_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 	{
 	  if(disable_all_logs == 0)
-	    syslog(LOG_ERR, "socket() failed, %s. "
+	    syslog(LOG_ERR, "socket() failed, %s, "
 		   "trying again in 15 seconds", strerror(errno));
 
 	  (void) sleep(15);
@@ -193,7 +205,7 @@ int main(int argc, char *argv[])
 	  (void) alarm(0);
 
 	  if(disable_all_logs == 0)
-	    syslog(LOG_ERR, "connect() failed, %s. "
+	    syslog(LOG_ERR, "connect() failed, %s, "
 		   "trying again in 15 seconds", strerror(errno));
 
 	  (void) close(sock_fd);

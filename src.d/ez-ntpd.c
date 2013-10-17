@@ -44,6 +44,7 @@ static void *thread_fun(void *);
 
 int main(int argc, char *argv[])
 {
+  int err = 0;
   int i = 0;
   int rc = 0;
   int conn_fd = -1;
@@ -70,6 +71,7 @@ int main(int argc, char *argv[])
       if(disable_all_logs == 0)
 	syslog(LOG_ERR, "%s already exists, exiting", PIDFILE);
 
+      fprintf(stderr, "%s already exists, exiting.\n", PIDFILE);
       return EXIT_FAILURE;
     }
 
@@ -100,14 +102,18 @@ int main(int argc, char *argv[])
       if(disable_all_logs == 0)
 	syslog(LOG_ERR, "ez-ntp not found in /etc/services, exiting");
 
+      fprintf(stderr, "ez-ntp not found in /etc/services, exiting.\n");
       return EXIT_FAILURE;
     }
 
   if((sock_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
     {
-      if(disable_all_logs == 0)
-	syslog(LOG_ERR, "socket() failed, %s. exiting", strerror(errno));
+      err = errno;
 
+      if(disable_all_logs == 0)
+	syslog(LOG_ERR, "socket() failed, %s, exiting", strerror(err));
+
+      fprintf(stderr, "socket() failed, %s, exiting.\n", strerror(err));
       return EXIT_FAILURE;
     }
 
@@ -115,9 +121,12 @@ int main(int argc, char *argv[])
 
   if(setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &tmpint, sizeof(int)) != 0)
     {
-      if(disable_all_logs == 0)
-	syslog(LOG_ERR, "setsockopt() failed, %s. exiting", strerror(errno));
+      err = errno;
 
+      if(disable_all_logs == 0)
+	syslog(LOG_ERR, "setsockopt() failed, %s, exiting", strerror(err));
+
+      fprintf(stderr, "setsockopt() failed, %s, exiting.\n", strerror(err));
       return EXIT_FAILURE;
     }
 
@@ -132,9 +141,12 @@ int main(int argc, char *argv[])
 
   if(bind(sock_fd, (const struct sockaddr *) &servaddr, sizeof(servaddr)) != 0)
     {
-      if(disable_all_logs == 0)
-	syslog(LOG_ERR, "bind() failed, %s. exiting", strerror(errno));
+      err = errno;
 
+      if(disable_all_logs == 0)
+	syslog(LOG_ERR, "bind() failed, %s, exiting", strerror(err));
+
+      fprintf(stderr, "bind() failed, %s, exiting.\n", strerror(err));
       return EXIT_FAILURE;
     }
 
@@ -144,9 +156,12 @@ int main(int argc, char *argv[])
 
   if(listen(sock_fd, SOMAXCONN) != 0)
     {
-      if(disable_all_logs == 0)
-	syslog(LOG_ERR, "listen() failed, %s. exiting", strerror(errno));
+      err = errno;
 
+      if(disable_all_logs == 0)
+	syslog(LOG_ERR, "listen() failed, %s, exiting", strerror(err));
+
+      fprintf(stderr, "listen() failed, %s, exiting.\n", strerror(err));
       return EXIT_FAILURE;
     }
 
@@ -181,8 +196,10 @@ int main(int argc, char *argv[])
 static void *thread_fun(void *arg)
 {
   int fd = *((int *) arg);
+  char *ptr = 0;
   char wr_buffer[128];
   socklen_t length = 0;
+  ssize_t remaining = 0;
   ssize_t rc = 0;
   struct linger linger;
   struct timeval tp;
@@ -209,21 +226,25 @@ static void *thread_fun(void *arg)
 	(wr_buffer, sizeof(wr_buffer), "%lud,%lud\r\n",
 	 (long unsigned int) tp.tv_sec,
 	 (long unsigned int) tp.tv_usec);
-      rc = send(fd, wr_buffer, strlen(wr_buffer), MSG_DONTWAIT);
+      ptr = wr_buffer;
+      remaining = strlen(wr_buffer);
 
-      if(rc > 0)
+      while(remaining > 0)
 	{
-	  if(rc != (ssize_t) strlen(wr_buffer)) /*
-						** wr_buffer will never, ever
-						** contain more than SSIZE_MAX
-						** bytes.
-						*/
-	    if(disable_all_logs == 0)
-	      syslog(LOG_ERR, "not all data sent on send()");
+	  rc = send(fd, ptr, remaining, MSG_DONTWAIT);
+
+	  if(rc <= 0)
+	    {
+	      if(rc == -1)
+		if(disable_all_logs == 0)
+		  syslog(LOG_ERR, "send() failed, %s", strerror(errno));
+
+	      break;
+	    }
+
+	  remaining -= rc;
+	  ptr += rc;
 	}
-      else if(rc == -1)
-	if(disable_all_logs == 0)
-	  syslog(LOG_ERR, "send() failed, %s", strerror(errno));
     }
   else if(disable_all_logs == 0)
     syslog(LOG_ERR, "gettimeofday() failed, %s", strerror(errno));
