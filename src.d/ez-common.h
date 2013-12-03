@@ -121,7 +121,7 @@ void preconnect_init(void)
     }
   else
     {
-      (void) memset(pidbuf, '\0', sizeof(pidbuf));
+      (void) memset(pidbuf, 0, sizeof(pidbuf));
       (void) snprintf(pidbuf, sizeof(pidbuf), "%d", getpid());
       pidbuf_len = strlen(pidbuf);
 
