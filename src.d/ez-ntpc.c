@@ -31,6 +31,7 @@
 
 #include <arpa/inet.h>
 #include <limits.h>
+#include <math.h>
 #include <netinet/in.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -233,7 +234,7 @@ int main(int argc, char *argv[])
 
 	  if(rc > 0)
 	    (void) strncat(buffer, rd_buffer,
-                           sizeof(buffer) - strlen(buffer) - 1);
+                           fmin(rc, sizeof(buffer) - strlen(buffer) - 1));
 	  else
 	    break;
 	}
@@ -245,6 +246,10 @@ int main(int argc, char *argv[])
 	{
 	  (void) close(sock_fd);
 	  sock_fd = -1;
+
+	  if(disable_all_logs == 0)
+	    syslog(LOG_ERR, "incorrect time (%s)", buffer);
+
 	  continue;
 	}
 
