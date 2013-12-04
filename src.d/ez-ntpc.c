@@ -31,7 +31,6 @@
 
 #include <arpa/inet.h>
 #include <limits.h>
-#include <math.h>
 #include <netinet/in.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -224,17 +223,18 @@ int main(int argc, char *argv[])
 	  if(strlen(buffer) > 2 && strstr(buffer, "\r\n") != 0)
 	    break;
 
-	  if((rc = recv(sock_fd, rd_buffer, sizeof(rd_buffer), MSG_PEEK)) > 0)
+	  if((rc = recv(sock_fd, rd_buffer, sizeof(rd_buffer) - 1,
+			MSG_PEEK)) > 0)
 	    {
-	      (void) alarm(8);
 	      (void) memset(rd_buffer, 0, sizeof(rd_buffer));
+	      (void) alarm(8);
 	      rc = recv(sock_fd, rd_buffer, rc, MSG_WAITALL);
 	      (void) alarm(0);
 	    }
 
 	  if(rc > 0)
 	    (void) strncat(buffer, rd_buffer,
-                           fmin(rc, sizeof(buffer) - strlen(buffer) - 1));
+                           sizeof(buffer) - strlen(buffer) - 1);
 	  else
 	    break;
 	}
