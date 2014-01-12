@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
   ** Issue a bind() call.
   */
 
-  bzero(&servaddr, sizeof(servaddr));
+  memset(&servaddr, 0, sizeof(servaddr));
   servaddr.sin_family = AF_INET;
   servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
   servaddr.sin_port = serv->s_port;

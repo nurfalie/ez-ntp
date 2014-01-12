@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
   ** Establish a connection to the remote host.
   */
 
-  bzero(&servaddr, sizeof(servaddr));
+  memset(&servaddr, 0, sizeof(servaddr));
   servaddr.sin_family = AF_INET;
   servaddr.sin_port = htons((uint16_t) port_num);
   servaddr.sin_addr.s_addr = inet_addr(remote_host);
