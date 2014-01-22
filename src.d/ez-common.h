@@ -123,7 +123,7 @@ void preconnect_init(void)
     {
       (void) memset(pidbuf, 0, sizeof(pidbuf));
       (void) snprintf(pidbuf, sizeof(pidbuf), "%d", getpid());
-      pidbuf_len = strlen(pidbuf);
+      pidbuf_len = (ssize_t) strlen(pidbuf);
 
       if(pidbuf_len != write(fd, pidbuf, strlen(pidbuf)))
 	{
@@ -208,7 +208,7 @@ void turn_into_daemon(void)
     rl.rlim_max = 2048;
 
   for(i = 0; i < rl.rlim_max; i++)
-    (void) close(i);
+    (void) close((int) i);
 
   fd0 = open("/dev/null", O_RDWR);
   fd1 = dup(0);

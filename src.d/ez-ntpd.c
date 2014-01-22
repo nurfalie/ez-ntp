@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
   memset(&servaddr, 0, sizeof(servaddr));
   servaddr.sin_family = AF_INET;
   servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-  servaddr.sin_port = serv->s_port;
+  servaddr.sin_port = (in_port_t) serv->s_port;
 
   if(bind(sock_fd, (const struct sockaddr *) &servaddr, sizeof(servaddr)) != 0)
     {
@@ -227,11 +227,11 @@ static void *thread_fun(void *arg)
 	 (long unsigned int) tp.tv_sec,
 	 (long unsigned int) tp.tv_usec);
       ptr = wr_buffer;
-      remaining = strlen(wr_buffer);
+      remaining = (ssize_t) strlen(wr_buffer);
 
       while(remaining > 0)
 	{
-	  rc = send(fd, ptr, remaining, MSG_DONTWAIT);
+	  rc = send(fd, ptr, (size_t) remaining, MSG_DONTWAIT);
 
 	  if(rc <= 0)
 	    {

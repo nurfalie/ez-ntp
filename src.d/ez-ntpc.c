@@ -228,7 +228,7 @@ int main(int argc, char *argv[])
 	    {
 	      (void) memset(rd_buffer, 0, sizeof(rd_buffer));
 	      (void) alarm(8);
-	      rc = recv(sock_fd, rd_buffer, rc, MSG_WAITALL);
+	      rc = recv(sock_fd, rd_buffer, (size_t) rc, MSG_WAITALL);
 	      (void) alarm(0);
 	    }
 
@@ -307,7 +307,8 @@ int main(int argc, char *argv[])
 
       if(gettimeofday(&home_tp, 0) == 0)
 	{
-	  if(abs(server_tp.tv_sec - home_tp.tv_sec) >= 1)
+	  if(server_tp.tv_sec - home_tp.tv_sec >= 1 ||
+	     home_tp.tv_sec - server_tp.tv_sec >= 1)
 	    {
 	      if(settimeofday(&server_tp, 0) != 0)
 		{
@@ -318,7 +319,8 @@ int main(int argc, char *argv[])
 	      else if(disable_all_logs == 0)
 		syslog(LOG_INFO, "adjusted system time");
 	    }
-	  else if(abs(server_tp.tv_usec - home_tp.tv_usec) >= 5)
+	  else if(server_tp.tv_usec - home_tp.tv_usec >= 5 ||
+		  home_tp.tv_usec - server_tp.tv_usec >= 5)
 	    {
 	      delta_tp.tv_sec = server_tp.tv_sec - home_tp.tv_sec;
 	      delta_tp.tv_usec = server_tp.tv_usec - home_tp.tv_usec;
