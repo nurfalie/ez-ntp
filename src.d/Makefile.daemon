@@ -5,22 +5,24 @@ INSTALL		=	install
 INSTALL_OPS	=	-o root -g root
 INSTALL_PATH	=	/usr/local/bin
 
-standard:	ez-ntpd
+all:		ez-ntpd
 
 INCLUDES	=	ez-common.h
 INCLUDE_PATH	=	-I/usr/include -I/usr/local/include -I.
-SRC		=	ez-ntpd.c
 LIBS		=	-lpthread
+SRC		=	ez-ntpd.c
 
 ez-ntpd:	$(SRC) $(INCLUDES)
 		$(GCC) $(GCC_OPTIONS) $(INCLUDE_PATH) -o ez-ntpd \
 		$(SRC) $(LIBS)
 
-install:
-		$(INSTALL) $(INSTALL_OPS) ez-ntpd $(INSTALL_PATH)/ez-ntpd
-
 clean:
 	/bin/rm -f ez-ntpd ez-ntpd.core core
+
+distclean: clean
+
+install:
+		$(INSTALL) $(INSTALL_OPS) ez-ntpd $(INSTALL_PATH)/ez-ntpd
 
 purge:
 	/bin/rm -f *~

@@ -1,4 +1,4 @@
-standard:
+all:
 	$(MAKE) -f Makefile.client
 	$(MAKE) -f Makefile.daemon
 
@@ -9,9 +9,12 @@ clean:
 	rm -f ez-ntpd.core
 	rm -f core
 
-purge:
-	rm -f *~
+distclean: clean
 
 install:
 	$(MAKE) -f Makefile.client install
 	$(MAKE) -f Makefile.daemon install
+
+purge:
+	rm -f *~
+

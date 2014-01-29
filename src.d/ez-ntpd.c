@@ -197,7 +197,7 @@ static void *thread_fun(void *arg)
 {
   int fd = *((int *) arg);
   char *ptr = 0;
-  char wr_buffer[128];
+  char wr_buffer[2 * sizeof(long unsigned int) + 64];
   socklen_t length = 0;
   ssize_t remaining = 0;
   ssize_t rc = 0;

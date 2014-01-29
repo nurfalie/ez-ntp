@@ -73,9 +73,9 @@ void onterm(int notused)
 
 void preconnect_init(void)
 {
+  char pidbuf[64];
   int err = 0;
   int fd = -1;
-  char pidbuf[64];
   ssize_t pidbuf_len = 0;
   struct sigaction act;
 

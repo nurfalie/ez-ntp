@@ -53,15 +53,15 @@ void onalarm(int notused)
 
 int main(int argc, char *argv[])
 {
-  int err = 0;
-  int i = 0;
-  int port_num = -1;
   char *tmp = 0;
-  char buffer[128];
+  char buffer[2 * sizeof(long unsigned int) + 64];
   char *endptr;
   char rd_buffer[16];
   char remote_host[128];
-  short goodtime = 0;
+  int err = 0;
+  int goodtime = 0;
+  int i = 0;
+  int port_num = -1;
   ssize_t rc = 0;
   struct stat st;
   struct timeval home_tp;
@@ -237,6 +237,9 @@ int main(int argc, char *argv[])
                            sizeof(buffer) - strlen(buffer) - 1);
 	  else
 	    break;
+
+	  if(strlen(buffer) > 2 * sizeof(long unsigned int) + 16)
+	    break;
 	}
 
       if(strlen(buffer) > 2 && strstr(buffer, "\r\n") != 0)
@@ -340,7 +343,7 @@ int main(int argc, char *argv[])
 
       (void) close(sock_fd);
       sock_fd = -1;
-      (void) sleep(60);
+      (void) sleep(15);
     }
 
   return EXIT_SUCCESS;

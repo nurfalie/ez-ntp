@@ -5,22 +5,24 @@ INSTALL		=	install
 INSTALL_OPS	=	-o root -g root
 INSTALL_PATH	=	/usr/local/bin
 
-standard:	ez-ntpc
+all:		ez-ntpc
 
 INCLUDES	=	ez-common.h
 INCLUDE_PATH	=	-I/usr/include -I/usr/local/include -I.
+LIBS		=
 SRC		=	ez-ntpc.c
-LIBS		=	-lm
 
 ez-ntpc:	$(SRC) $(INCLUDES)
 		$(GCC) $(GCC_OPTIONS) $(INCLUDE_PATH) -o ez-ntpc \
 		$(SRC) $(LIBS)
 
-install:
-		$(INSTALL) $(INSTALL_OPS) ez-ntpc $(INSTALL_PATH)/ez-ntpc
-
 clean:
 	/bin/rm -f ez-ntpc ez-ntpc.core core
+
+distclean: clean
+
+install:
+		$(INSTALL) $(INSTALL_OPS) ez-ntpc $(INSTALL_PATH)/ez-ntpc
 
 purge:
 	/bin/rm -f *~
