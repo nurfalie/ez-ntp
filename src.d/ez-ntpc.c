@@ -48,7 +48,6 @@ void onalarm(int);
 void onalarm(int notused)
 {
   (void) notused;
-  return;
 }
 
 int main(int argc, char *argv[])
