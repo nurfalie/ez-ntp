@@ -311,20 +311,21 @@ int main(int argc, char *argv[])
 
       if(gettimeofday(&home_tp, 0) == 0)
 	{
-	  if(server_tp.tv_sec - home_tp.tv_sec >= 1 ||
-	     home_tp.tv_sec - server_tp.tv_sec >= 1)
+	  if(labs(home_tp.tv_sec - server_tp.tv_sec) >= 1)
 	    {
-	      if(settimeofday(&server_tp, 0) != 0)
+	      if(labs(home_tp.tv_sec - server_tp.tv_sec) <= 15)
 		{
-		  if(disable_all_logs == 0)
-		    syslog(LOG_ERR, "settimeofday() failed, %s",
-			   strerror(errno));
+		  if(settimeofday(&server_tp, 0) != 0)
+		    {
+		      if(disable_all_logs == 0)
+			syslog(LOG_ERR, "settimeofday() failed, %s",
+			       strerror(errno));
+		    }
+		  else if(disable_all_logs == 0)
+		    syslog(LOG_INFO, "adjusted system time (settimeofday())");
 		}
-	      else if(disable_all_logs == 0)
-		syslog(LOG_INFO, "adjusted system time");
 	    }
-	  else if(server_tp.tv_usec - home_tp.tv_usec >= 5 ||
-		  home_tp.tv_usec - server_tp.tv_usec >= 5)
+	  else if(labs(home_tp.tv_usec - server_tp.tv_usec) >= 5)
 	    {
 	      delta_tp.tv_sec = server_tp.tv_sec - home_tp.tv_sec;
 	      delta_tp.tv_usec = server_tp.tv_usec - home_tp.tv_usec;
@@ -336,7 +337,7 @@ int main(int argc, char *argv[])
 			   strerror(errno));
 		}
 	      else if(disable_all_logs == 0)
-		syslog(LOG_INFO, "adjusted system time");
+		syslog(LOG_INFO, "adjusted system time (adjtime())");
 	    }
 	}
       else if(disable_all_logs == 0)
