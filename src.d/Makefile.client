@@ -1,23 +1,22 @@
 GCC		=	gcc
 GCC_OPTIONS	=	-Wall -Wextra -Wstack-protector -fPIE \
 			-fstack-protector-all -pedantic -pie
+INCLUDES	=	ez-common.h
+INCLUDE_PATH	=	-I. -I/usr/include -I/usr/local/include
 INSTALL		=	install
 INSTALL_OPS	=	-o root -g root
 INSTALL_PATH	=	/usr/local/bin
-
-all:		ez-ntpc
-
-INCLUDES	=	ez-common.h
-INCLUDE_PATH	=	-I/usr/include -I/usr/local/include -I.
 LIBS		=
 SRC		=	ez-ntpc.c
 
-ez-ntpc:	$(SRC) $(INCLUDES)
+all:		ez-ntpc
+
+ez-ntpc:	$(INCLUDES) $(SRC)
 		$(GCC) $(GCC_OPTIONS) $(INCLUDE_PATH) -o ez-ntpc \
 		$(SRC) $(LIBS)
 
 clean:
-	/bin/rm -f ez-ntpc ez-ntpc.core core
+	rm -f core ez-ntpc ez-ntpc.core
 
 distclean: clean
 
@@ -25,4 +24,4 @@ install:
 		$(INSTALL) $(INSTALL_OPS) ez-ntpc $(INSTALL_PATH)/ez-ntpc
 
 purge:
-	/bin/rm -f *~
+	rm -f *~

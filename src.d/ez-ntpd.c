@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2005, 2006, 2013 Alexis Megas.
+** Copyright (c) 2005 - 2014 Alexis Megas.
 ** All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
@@ -44,17 +44,17 @@ static void *thread_fun(void *);
 
 int main(int argc, char *argv[])
 {
+  int conn_fd = -1;
   int err = 0;
   int i = 0;
   int rc = 0;
-  int conn_fd = -1;
   int tmpint = 0;
   pthread_t thread = 0;
   socklen_t len = 0;
-  struct stat st;
   struct servent *serv = 0;
   struct sockaddr client;
   struct sockaddr_in servaddr;
+  struct stat st;
 
   for(i = 0; i < argc; i++)
     if(strcmp(argv[i], "--disable_all_logs") == 0)
@@ -195,14 +195,17 @@ int main(int argc, char *argv[])
 
 static void *thread_fun(void *arg)
 {
-  int fd = *((int *) arg);
   char *ptr = 0;
   char wr_buffer[2 * sizeof(long unsigned int) + 64];
+  int fd = -1;
   socklen_t length = 0;
   ssize_t remaining = 0;
   ssize_t rc = 0;
   struct linger linger;
   struct timeval tp;
+
+  if(arg)
+    fd = *((int *) arg);
 
   (void) pthread_detach(pthread_self());
   (void) memset(wr_buffer, 0, sizeof(wr_buffer));

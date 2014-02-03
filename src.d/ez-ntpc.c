@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2005, 2006, 2013 Alexis Megas.
+** Copyright (c) 2005 - 2014 Alexis Megas.
 ** All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
@@ -53,11 +53,11 @@ void onalarm(int notused)
 
 int main(int argc, char *argv[])
 {
-  char *tmp = 0;
   char buffer[2 * sizeof(long unsigned int) + 64];
   char *endptr;
   char rd_buffer[16];
   char remote_host[128];
+  char *tmp = 0;
   int err = 0;
   int goodtime = 0;
   int i = 0;
@@ -212,6 +212,8 @@ int main(int argc, char *argv[])
 	  (void) sleep(15);
 	  continue;
 	}
+      else
+	(void) alarm(0);
 
       if(terminated > 0)
 	break;

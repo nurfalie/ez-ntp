@@ -1,10 +1,9 @@
+Building & Installing:
+	1. Modify the make files to fit your system(s).
+	2. Execute make.
+	3. Execute sudo make install.
+	4. Copy the startup files (*.sh) into the appropriate initialization
+           directories.
+
 Server Port Configuration:
 	Edit /etc/services and add "ez-ntp		50000/tcp"
-
-Building & Installing:
-	1. Modify the make files to fit your system(s)
-	2. make
-	3. sudo make install
-	4. Copy the startup files (*.sh) into the appropriate directories
-	   Debian: /etc/init.d (also run update-rc.d)
-	   FreeBSD: /usr/local/etc/rc.d

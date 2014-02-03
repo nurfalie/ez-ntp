@@ -3,21 +3,21 @@
 
 #include <errno.h>
 #include <fcntl.h>
-#include <stdio.h>
+#include <netinet/in.h>
 #include <signal.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <syslog.h>
-#include <unistd.h>
 #include <strings.h>
+#include <sys/resource.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
-#include <sys/resource.h>
-#include <netinet/in.h>
+#include <syslog.h>
+#include <unistd.h>
 
-#define VERSION 1.9.0
+#define VERSION 1.9.1
 
 int sock_fd = -1;
 int terminated = 0;

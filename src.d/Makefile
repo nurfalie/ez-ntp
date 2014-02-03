@@ -17,4 +17,3 @@ install:
 
 purge:
 	rm -f *~
-

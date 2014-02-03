@@ -1,23 +1,22 @@
 GCC		=	gcc
 GCC_OPTIONS	=	-Wall -Wextra -Wstack-protector \
 			-fPIE -fstack-protector-all -pedantic -pie
+INCLUDES	=	ez-common.h
+INCLUDE_PATH	=	-I. -I/usr/include -I/usr/local/include
 INSTALL		=	install
 INSTALL_OPS	=	-o root -g root
 INSTALL_PATH	=	/usr/local/bin
-
-all:		ez-ntpd
-
-INCLUDES	=	ez-common.h
-INCLUDE_PATH	=	-I/usr/include -I/usr/local/include -I.
 LIBS		=	-lpthread
 SRC		=	ez-ntpd.c
 
-ez-ntpd:	$(SRC) $(INCLUDES)
+all:		ez-ntpd
+
+ez-ntpd:	$(INCLUDES) $(SRC)
 		$(GCC) $(GCC_OPTIONS) $(INCLUDE_PATH) -o ez-ntpd \
 		$(SRC) $(LIBS)
 
 clean:
-	/bin/rm -f ez-ntpd ez-ntpd.core core
+	rm -f core ez-ntpd ez-ntpd.core
 
 distclean: clean
 
@@ -25,4 +24,4 @@ install:
 		$(INSTALL) $(INSTALL_OPS) ez-ntpd $(INSTALL_PATH)/ez-ntpd
 
 purge:
-	/bin/rm -f *~
+	rm -f *~
