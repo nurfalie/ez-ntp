@@ -9,7 +9,7 @@ start)
 	fi
 
 	echo "Starting the EzNTP client daemon."
-	/usr/local/bin/ez-ntpc -p 50000 -h 193.168.0.5
+	/usr/local/bin/ez-ntpc -p 50000 -h 192.168.178.1
 	;;
 stop)
         if [ ! -e /var/run/ez-ntpc.pid ]
