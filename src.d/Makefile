@@ -9,7 +9,7 @@ clean:
 	rm -f ez-ntpd.core
 	rm -f core
 
-distclean: clean
+distclean: clean purge
 
 install:
 	$(MAKE) -f Makefile.client install

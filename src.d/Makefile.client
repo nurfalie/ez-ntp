@@ -18,7 +18,7 @@ ez-ntpc:	$(INCLUDES) $(SRC)
 clean:
 	rm -f core ez-ntpc ez-ntpc.core
 
-distclean: clean
+distclean: clean purge
 
 install:
 		$(INSTALL) $(INSTALL_OPS) ez-ntpc $(INSTALL_PATH)/ez-ntpc

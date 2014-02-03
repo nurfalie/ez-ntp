@@ -18,7 +18,7 @@ ez-ntpd:	$(INCLUDES) $(SRC)
 clean:
 	rm -f core ez-ntpd ez-ntpd.core
 
-distclean: clean
+distclean: clean purge
 
 install:
 		$(INSTALL) $(INSTALL_OPS) ez-ntpd $(INSTALL_PATH)/ez-ntpd
