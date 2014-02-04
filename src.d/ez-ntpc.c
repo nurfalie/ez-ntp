@@ -234,8 +234,13 @@ int main(int argc, char *argv[])
 	    }
 
 	  if(rc > 0)
-	    (void) strncat(buffer, rd_buffer,
-                           sizeof(buffer) - strlen(buffer) - 1);
+	    {
+	      if(sizeof(buffer) > strlen(buffer))
+		(void) strncat(buffer, rd_buffer,
+			       sizeof(buffer) - strlen(buffer) - 1);
+	      else
+		break;
+	    }
 	  else
 	    break;
 
