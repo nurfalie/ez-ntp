@@ -230,7 +230,7 @@ static void *thread_fun(void *arg)
     {
       (void) memset(wr_buffer, 0, sizeof(wr_buffer));
       (void) snprintf
-	(wr_buffer, sizeof(wr_buffer), "%lud,%lud\r\n",
+	(wr_buffer, sizeof(wr_buffer), "%lu,%lu\r\n",
 	 (long unsigned int) tp.tv_sec,
 	 (long unsigned int) tp.tv_usec);
       ptr = wr_buffer;
