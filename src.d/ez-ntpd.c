@@ -208,6 +208,10 @@ static void *thread_fun(void *arg)
     fd = *((int *) arg);
 
   (void) pthread_detach(pthread_self());
+
+  if(fd < 0)
+    return (void *) 0;
+
   (void) memset(wr_buffer, 0, sizeof(wr_buffer));
   linger.l_onoff = 1;
   linger.l_linger = 0;
