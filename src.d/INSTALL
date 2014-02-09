@@ -1,8 +1,8 @@
-Building & Installing:
+Building and Installing:
 	1. Modify the make files to fit your system(s).
 	2. Execute make.
 	3. Execute sudo make install.
-	4. Copy the startup files (*.sh) into the appropriate initialization
+	4. Copy the startup files into the appropriate initialization
            directories.
 
 Server Port Configuration:
