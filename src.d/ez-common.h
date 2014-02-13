@@ -17,7 +17,7 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#define VERSION 1.9.4
+#define VERSION 1.9.5
 
 int sock_fd = -1;
 int terminated = 0;
@@ -43,7 +43,7 @@ void onexit(void)
 	      strerror(err));
     }
 
-  if(sock_fd != -1)
+  if(sock_fd > -1)
     {
       if(close(sock_fd) != 0)
 	{
@@ -107,7 +107,7 @@ void preconnect_init(void)
       fprintf(stderr, "sigaction() failed, %s.\n", strerror(err));
     }
 
-  if((fd = open(PIDFILE, O_EXCL | O_CREAT | O_WRONLY, S_IRUSR)) == -1)
+  if((fd = open(PIDFILE, O_CREAT | O_EXCL | O_WRONLY, S_IRUSR)) == -1)
     {
       err = errno;
 
@@ -160,7 +160,7 @@ void turn_into_daemon(void)
   int fd1 = 0;
   int fd2 = 0;
   pid_t pid = 0;
-  unsigned int i = 0;
+  rlim_t i = 0;
   struct rlimit rl;
 
   /*

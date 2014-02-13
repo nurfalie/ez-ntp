@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  if((sock_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+  if((sock_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1)
     {
       err = errno;
 

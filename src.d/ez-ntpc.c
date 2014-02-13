@@ -94,22 +94,7 @@ int main(int argc, char *argv[])
   (void) memset(remote_host, 0, sizeof(remote_host));
 
   for(; *argv != 0; argv++)
-    if(strcmp(*argv, "-p") == 0)
-      {
-	argv++;
-
-	if(*argv != 0)
-	  port_num = atoi(*argv);
-	else
-	  {
-	    if(disable_all_logs == 0)
-	      syslog(LOG_ERR, "undefined port, exiting");
-
-	    fprintf(stderr, "Undefined port, exiting.\n");
-	    return EXIT_FAILURE;
-	  }
-      }
-    else if(strcmp(*argv, "-h") == 0)
+    if(strcmp(*argv, "-h") == 0)
       {
 	argv++;
 
@@ -127,8 +112,23 @@ int main(int argc, char *argv[])
 	    return EXIT_FAILURE;
 	  }
       }
+    else if(strcmp(*argv, "-p") == 0)
+      {
+	argv++;
 
-  if(port_num == -1 || strlen(remote_host) == 0)
+	if(*argv != 0)
+	  port_num = atoi(*argv);
+	else
+	  {
+	    if(disable_all_logs == 0)
+	      syslog(LOG_ERR, "undefined port, exiting");
+
+	    fprintf(stderr, "Undefined port, exiting.\n");
+	    return EXIT_FAILURE;
+	  }
+      }
+
+  if(port_num < 0  || strlen(remote_host) == 0)
     {
       if(disable_all_logs == 0)
 	syslog(LOG_ERR, "missing remote port number or remote hostname, "
@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
 
   while(terminated < 1)
     {
-      while((sock_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+      while((sock_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1)
 	{
 	  if(disable_all_logs == 0)
 	    syslog(LOG_ERR, "socket() failed, %s, "
