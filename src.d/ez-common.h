@@ -122,7 +122,7 @@ void preconnect_init(void)
   else
     {
       (void) memset(pidbuf, 0, sizeof(pidbuf));
-      (void) snprintf(pidbuf, sizeof(pidbuf), "%d", (int) getpid());
+      (void) snprintf(pidbuf, sizeof(pidbuf), "%lu", (unsigned long) getpid());
       pidbuf_len = (ssize_t) strlen(pidbuf);
 
       if(pidbuf_len != write(fd, pidbuf, strlen(pidbuf)))
