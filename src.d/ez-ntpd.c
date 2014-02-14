@@ -212,7 +212,6 @@ static void *thread_fun(void *arg)
   if(fd < 0)
     return (void *) 0;
 
-  (void) memset(wr_buffer, 0, sizeof(wr_buffer));
   linger.l_onoff = 1;
   linger.l_linger = 0;
   length = sizeof(linger);
@@ -231,8 +230,8 @@ static void *thread_fun(void *arg)
       (void) memset(wr_buffer, 0, sizeof(wr_buffer));
       (void) snprintf
 	(wr_buffer, sizeof(wr_buffer), "%lu,%lu\r\n",
-	 (long unsigned int) tp.tv_sec,
-	 (long unsigned int) tp.tv_usec);
+	 (unsigned long) tp.tv_sec,
+	 (unsigned long) tp.tv_usec);
       ptr = wr_buffer;
       remaining = (ssize_t) strlen(wr_buffer);
 

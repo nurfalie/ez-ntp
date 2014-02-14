@@ -224,6 +224,8 @@ int main(int argc, char *argv[])
 	  if(strlen(buffer) > 2 && strstr(buffer, "\r\n") != 0)
 	    break;
 
+	  (void) memset(rd_buffer, 0, sizeof(rd_buffer));
+
 	  if((rc = recv(sock_fd, rd_buffer, sizeof(rd_buffer) - 1,
 			MSG_PEEK)) > 0)
 	    {
