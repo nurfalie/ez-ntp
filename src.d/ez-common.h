@@ -17,7 +17,7 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#define VERSION 1.9.5
+#define VERSION 1.9.6
 
 int sock_fd = -1;
 int terminated = 0;
@@ -183,9 +183,9 @@ void turn_into_daemon(void)
   if((pid = fork()) < 0)
     {
       if(disable_all_logs == 0)
-	syslog(LOG_ERR, "fork() failed, exiting");
+	syslog(LOG_ERR, "%s", "fork() failed, exiting");
 
-      fprintf(stderr, "fork() failed, exiting.\n");
+      fprintf(stderr, "%s", "fork() failed, exiting.\n");
       exit(EXIT_FAILURE);
     }
   else if(pid != 0)

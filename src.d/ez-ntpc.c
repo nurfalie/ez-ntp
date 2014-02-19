@@ -106,9 +106,11 @@ int main(int argc, char *argv[])
 	else
 	  {
 	    if(disable_all_logs == 0)
-	      syslog(LOG_ERR, "undefined remote host IP address, exiting");
+	      syslog(LOG_ERR, "%s",
+		     "undefined remote host IP address, exiting");
 
-	    fprintf(stderr, "Undefined remote host IP address, exiting.");
+	    fprintf(stderr, "%s",
+		    "Undefined remote host IP address, exiting.");
 	    return EXIT_FAILURE;
 	  }
       }
@@ -121,9 +123,9 @@ int main(int argc, char *argv[])
 	else
 	  {
 	    if(disable_all_logs == 0)
-	      syslog(LOG_ERR, "undefined port, exiting");
+	      syslog(LOG_ERR, "%s", "undefined port, exiting");
 
-	    fprintf(stderr, "Undefined port, exiting.\n");
+	    fprintf(stderr, "%s", "Undefined port, exiting.\n");
 	    return EXIT_FAILURE;
 	  }
       }
@@ -131,11 +133,11 @@ int main(int argc, char *argv[])
   if(port_num < 0  || strlen(remote_host) == 0)
     {
       if(disable_all_logs == 0)
-	syslog(LOG_ERR, "missing remote port number or remote hostname, "
-	       "exiting");
+	syslog(LOG_ERR, "%s",
+	       "missing remote port number or remote hostname, exiting");
 
-      fprintf(stderr, "Missing remote port number or remote hostname, "
-	      "exiting.\n");
+      fprintf(stderr, "%s",
+	      "Missing remote port number or remote hostname, exiting.\n");
       return EXIT_FAILURE;
     }
 
@@ -329,7 +331,8 @@ int main(int argc, char *argv[])
 			       strerror(errno));
 		    }
 		  else if(disable_all_logs == 0)
-		    syslog(LOG_INFO, "adjusted system time (settimeofday())");
+		    syslog(LOG_INFO, "%s",
+			   "adjusted system time (settimeofday())");
 		}
 	    }
 	  else if(labs(home_tp.tv_usec - server_tp.tv_usec) >= 5)
@@ -344,7 +347,7 @@ int main(int argc, char *argv[])
 			   strerror(errno));
 		}
 	      else if(disable_all_logs == 0)
-		syslog(LOG_INFO, "adjusted system time (adjtime())");
+		syslog(LOG_INFO, "%s", "adjusted system time (adjtime())");
 	    }
 	}
       else if(disable_all_logs == 0)

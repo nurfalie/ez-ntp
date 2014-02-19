@@ -100,9 +100,9 @@ int main(int argc, char *argv[])
   if((serv = getservbyname("ez-ntp", "tcp")) == 0)
     {
       if(disable_all_logs == 0)
-	syslog(LOG_ERR, "ez-ntp not found in /etc/services, exiting");
+	syslog(LOG_ERR, "%s", "ez-ntp not found in /etc/services, exiting");
 
-      fprintf(stderr, "ez-ntp not found in /etc/services, exiting.\n");
+      fprintf(stderr, "%s", "ez-ntp not found in /etc/services, exiting.\n");
       return EXIT_FAILURE;
     }
 
