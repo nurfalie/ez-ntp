@@ -1,10 +1,22 @@
+UNAME := $(shell uname)
+
+ifeq ($(UNAME), Darwin)
+	SYSTEM=osx
+else ifeq ($(UNAME), FreeBSD)
+	SYSTEM=freebsd
+else ifeq ($(UNAME), Linux)
+	SYSTEM=linux
+else
+	SYSTEM=linux
+endif
+
 all:
-	$(MAKE) -f Makefile.client
-	$(MAKE) -f Makefile.daemon
+	$(MAKE) -f Makefile.$(SYSTEM).client
+	$(MAKE) -f Makefile.$(SYSTEM).daemon
 
 clean:
-	$(MAKE) -f Makefile.client clean
-	$(MAKE) -f Makefile.daemon clean
+	$(MAKE) -f Makefile.$(SYSTEM).client clean
+	$(MAKE) -f Makefile.$(SYSTEM).daemon clean
 	rm -f ez-ntpc.core
 	rm -f ez-ntpd.core
 	rm -f core
@@ -12,8 +24,8 @@ clean:
 distclean: clean purge
 
 install:
-	$(MAKE) -f Makefile.client install
-	$(MAKE) -f Makefile.daemon install
+	$(MAKE) -f Makefile.$(SYSTEM).client install
+	$(MAKE) -f Makefile.$(SYSTEM).daemon install
 
 purge:
 	rm -f *~
