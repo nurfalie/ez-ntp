@@ -9,7 +9,7 @@ case "$1" in
 	fi
 
 	echo "Starting the EzNTP client daemon."
-	/usr/local/bin/ez-ntpc -p 50000 -h 192.168.178.1
+	/usr/local/bin/ez-ntpc -h 192.168.178.1 -p 50000
 	;;
     stop)
         if [ ! -e /var/run/ez-ntpc.pid ]

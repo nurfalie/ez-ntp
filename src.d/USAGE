@@ -1,5 +1,5 @@
 Client:
-	/usr/local/bin/ez-ntpc -p SERVER_PORT -h SERVER_IP_ADDRESS
+	/usr/local/bin/ez-ntpc -h SERVER_IP_ADDRESS -p SERVER_PORT
 
 Server:
 	/usr/local/bin/ez-ntpd
