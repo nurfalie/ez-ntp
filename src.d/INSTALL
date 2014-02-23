@@ -5,5 +5,5 @@ Building and Installing:
 	4. Copy the startup files into the appropriate initialization
            directories.
 
-Server Port Configuration:
-	Edit /etc/services and add "ez-ntp		50000/tcp"
+Server Configuration:
+	Edit /etc/services and add "ez-ntp		50000/tcp".
