@@ -1,0 +1,136 @@
+1.9.7 (02/28/2014)
+
+1. Close the reading sides of a server's client sockets.
+
+1.9.6 (02/20/2014)
+
+1. Specify formats in fprintf() and syslog().
+
+1.9.5 (02/16/2014)
+
+1. Clear buffers with memset().
+2. Other snprintf() corrections.
+3. Specify IPPROTO_TCP in socket().
+
+1.9.4 (02/06/2014)
+
+1. Corrected snprintf() arguments in ez-ntpd.c. 
+
+1.9.3 (02/06/2014)
+
+1. Exit thread_fun() if the socket descriptor is invalid.
+
+1.9.2 (02/04/2014)
+
+1. Guard against negative size_t values.
+
+1.9.1 (02/03/2014)
+
+1. Must properly terminate active alarms in the client.
+2. Restrict the seconds delta between the client and the server to
+   [1, 15] seconds.
+
+1.9.0 (01/29/2014)
+
+1. Decreased request times in the client.
+2. Prevent an endless loop in the client.
+3. Replaced bzero() with memset().
+
+1.8.9 (12/20/2013)
+
+1. Removed use of fmin().
+
+1.8.8 (11/20/2013)
+
+1. Improved error reporting.
+2. Improved use of send() in thread_fun().
+
+1.8.7 (09/11/2013)
+
+1. Corrected socket.h include.
+2. Corrected strncat() parameters in the client.
+3. Inspect errno after strtol().
+
+1.8.6 (09/10/2013)
+
+1. Avoid TIME_WAIT on the server.
+2. Increased listen() backlog to SOMAXCONN on the server.
+3. Increased recv() read size on the client.
+4. Removed MSG_FIN from the server.
+5. Removed disable_conn_log and disable_log command-line options
+   from the client.
+
+1.8.5 (09/03/2013)
+
+1. Decreased polling interval of client.
+
+1.8.4 (03/09/2012)
+
+1. Corrected warnings.
+
+1.8.3 (01/13/2011)
+
+1. Use strtol() instead of atol().
+2. Validate strtok() return values.
+
+1.8.2 (12/24/2010)
+
+1. Added O_EXCL to open().
+
+1.8.1 (09/12/2008)
+
+1. Removed absolute paths from the Makefile file.
+2. Updated an snprintf() format.
+
+1.8.0 (11/26/2007)
+
+1. The lock files have been replaced with pid files that contain the
+   respective process ids.
+2. Updated the startup scripts so that they conform to Debian standards.
+3. Updated the INSTALL document.
+4. Updated the make files.
+
+1.7.0 (12/19/2006)
+
+1. The client has been modified to use settimeofday() if the difference in seconds between the server's clock and the client's clock is greater than or equal to one and adjtime() if the difference in microseconds
+   is greater than or equal to five.
+
+1.6.0 (12/10/2006)
+
+1. Fixed an issue with the daemon. The --disable_all_logs flag now
+   functions as intended.
+
+1.5.0 (12/04/2006)
+
+1. Minor bug fixed. Version remains at 1.5.
+
+1.5.0 (12/03/2006)
+
+1. Introduced the flag --disable_conn_log to prevent logging of failed
+   connect() calls.
+
+1.4.0 (12/03/2006)
+
+1. Some code housekeeping. Re-added a sleep after a failed
+   connect() to prevent CPU throttling.
+
+1.3.0 (12/02/2006)
+
+1. Calling settimeofday() at least once.
+
+1.2.0 (12/01/2006)
+
+1. Replaced settimeofday() with adjtime().
+2. /var/run/ez-ntpc.pid and /var/run/ez-ntpd.pid have been replaced
+   by ez-ntpc.lock and ez-ntpd.lock. 
+3. New option to disable the logging of successful events. Simply add
+   --disable_log to ez-ntpc.sh.
+4. Updated the .sh files. 
+
+1.1.0 (08/15/2005)
+
+1. Prevent the client from entering an endless recv() call. 
+
+1.0.0 (08/14/2004)
+
+1. First version available.

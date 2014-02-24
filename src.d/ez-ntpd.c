@@ -171,6 +171,8 @@ int main(int argc, char *argv[])
 
       if((conn_fd = accept(sock_fd, &client, &len)) >= 0)
 	{
+	  shutdown(conn_fd, SHUT_RD);
+
 	  if((rc = pthread_create(&thread, (const pthread_attr_t *) 0,
 				  thread_fun, (void *) &conn_fd)) != 0)
 	    {
