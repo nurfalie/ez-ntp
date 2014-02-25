@@ -76,7 +76,8 @@ void preconnect_init(void)
   char pidbuf[64];
   int err = 0;
   int fd = -1;
-  ssize_t pidbuf_len = 0;
+  size_t pidbuf_length = 0;
+  ssize_t rc = 0;
   struct sigaction act;
 
   if(atexit(onexit) != 0)
@@ -97,7 +98,7 @@ void preconnect_init(void)
   (void) sigemptyset(&act.sa_mask);
   act.sa_flags = 0;
 
-  if(sigaction(SIGTERM, &act, (struct sigaction *) NULL) != 0)
+  if(sigaction(SIGTERM, &act, 0) != 0)
     {
       err = errno;
 
@@ -122,10 +123,11 @@ void preconnect_init(void)
   else
     {
       (void) memset(pidbuf, 0, sizeof(pidbuf));
-      (void) snprintf(pidbuf, sizeof(pidbuf), "%lu", (unsigned long) getpid());
-      pidbuf_len = (ssize_t) strlen(pidbuf);
+      (void) snprintf(pidbuf, sizeof(pidbuf),
+		      "%lu", (unsigned long) getpid());
+      pidbuf_length = strlen(pidbuf);
 
-      if(pidbuf_len != write(fd, pidbuf, strlen(pidbuf)))
+      if((rc = write(fd, pidbuf, pidbuf_length)) == -1)
 	{
 	  err = errno;
 
@@ -136,6 +138,16 @@ void preconnect_init(void)
 	  fprintf(stderr, "write() failed for %s, %s, exiting.\n",
 		  PIDFILE, strerror(err));
 	  (void) close(fd);
+	  exit(EXIT_FAILURE);
+	}
+      else if((ssize_t) pidbuf_length != rc)
+	{
+	  if(disable_all_logs == 0)
+	    syslog(LOG_ERR, "write() error for %s, %s, exiting",
+		   PIDFILE, strerror(err));
+
+	  fprintf(stderr, "write() error for %s, %s, exiting.\n",
+		  PIDFILE, strerror(err));
 	  exit(EXIT_FAILURE);
 	}
     }

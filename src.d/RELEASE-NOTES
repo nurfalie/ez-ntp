@@ -1,6 +1,8 @@
 1.9.7 (02/28/2014)
 
-1. Close the reading sides of a server's client sockets.
+1. Added the Wconversion and Wformat compiler flags.
+2. Close the reading sides of a server's client sockets.
+3. New OS X make files.
 
 1.9.6 (02/20/2014)
 
@@ -86,9 +88,9 @@
 
 1. The lock files have been replaced with pid files that contain the
    respective process ids.
-2. Updated the startup scripts so that they conform to Debian standards.
-3. Updated the INSTALL document.
-4. Updated the make files.
+2. Updated the INSTALL document.
+3. Updated the make files.
+4. Updated the startup scripts so that they conform to Debian standards.
 
 1.7.0 (12/19/2006)
 
@@ -122,11 +124,11 @@
 
 1.2.0 (12/01/2006)
 
-1. Replaced settimeofday() with adjtime().
-2. /var/run/ez-ntpc.pid and /var/run/ez-ntpd.pid have been replaced
-   by ez-ntpc.lock and ez-ntpd.lock. 
-3. New option to disable the logging of successful events. Simply add
+1. New option to disable the logging of successful events. Simply add
    --disable_log to ez-ntpc.sh.
+2. Replaced settimeofday() with adjtime().
+3. The files /var/run/ez-ntpc.pid and /var/run/ez-ntpd.pid have been replaced
+   by ez-ntpc.lock and ez-ntpd.lock. 
 4. Updated the .sh files. 
 
 1.1.0 (08/15/2005)

@@ -173,8 +173,7 @@ int main(int argc, char *argv[])
 	{
 	  shutdown(conn_fd, SHUT_RD);
 
-	  if((rc = pthread_create(&thread, (const pthread_attr_t *) 0,
-				  thread_fun, (void *) &conn_fd)) != 0)
+	  if((rc = pthread_create(&thread, 0, thread_fun, &conn_fd)) != 0)
 	    {
 	      if(disable_all_logs == 0)
 		syslog
@@ -212,14 +211,13 @@ static void *thread_fun(void *arg)
   (void) pthread_detach(pthread_self());
 
   if(fd < 0)
-    return (void *) 0;
+    return 0;
 
   linger.l_onoff = 1;
   linger.l_linger = 0;
   length = sizeof(linger);
 
-  if(setsockopt(fd, SOL_SOCKET, SO_LINGER, (const void *) &linger,
-		length) != 0)
+  if(setsockopt(fd, SOL_SOCKET, SO_LINGER, &linger, length) != 0)
     if(disable_all_logs == 0)
       syslog(LOG_ERR, "setsockopt() failed, %s", strerror(errno));
 
@@ -261,5 +259,5 @@ static void *thread_fun(void *arg)
     if(disable_all_logs == 0)
       syslog(LOG_ERR, "close() failed, %s", strerror(errno));
 
-  return (void *) 0;
+  return 0;
 }

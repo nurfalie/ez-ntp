@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
   (void) sigemptyset(&act.sa_mask);
   act.sa_flags = 0;
 
-  if(sigaction(SIGALRM, &act, (struct sigaction *) 0) != 0)
+  if(sigaction(SIGALRM, &act, 0) != 0)
     {
       err = errno;
 
