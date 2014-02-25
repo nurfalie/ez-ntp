@@ -133,6 +133,6 @@
 
 1. Prevent the client from entering an endless recv() call. 
 
-1.0.0 (08/14/2004)
+1.0.0 (08/14/2005)
 
 1. First version is now available.
