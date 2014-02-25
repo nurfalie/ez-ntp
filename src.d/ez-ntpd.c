@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
   int rc = 0;
   int tmpint = 0;
   pthread_t thread = 0;
-  socklen_t len = 0;
+  socklen_t length = 0;
   struct servent *serv = 0;
   struct sockaddr client;
   struct sockaddr_in servaddr;
@@ -167,9 +167,9 @@ int main(int argc, char *argv[])
 
   for(;;)
     {
-      len = sizeof(client);
+      length = sizeof(client);
 
-      if((conn_fd = accept(sock_fd, &client, &len)) >= 0)
+      if((conn_fd = accept(sock_fd, &client, &length)) >= 0)
 	{
 	  shutdown(conn_fd, SHUT_RD);
 
