@@ -19,6 +19,7 @@ case "$1" in
 	else
 	    echo "Terminating the EzNTP daemon."
 	    kill -TERM `cat /var/run/ez-ntpd.pid`
+	    echo $?
 	fi
 
         ;;
