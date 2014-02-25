@@ -92,7 +92,9 @@
 
 1.7.0 (12/19/2006)
 
-1. The client has been modified to use settimeofday() if the difference in seconds between the server's clock and the client's clock is greater than or equal to one and adjtime() if the difference in microseconds
+1. The client has been modified to use settimeofday() if the difference
+   in seconds between the server's clock and the client's clock is greater
+   than or equal to one and adjtime() if the difference in microseconds
    is greater than or equal to five.
 
 1.6.0 (12/10/2006)
