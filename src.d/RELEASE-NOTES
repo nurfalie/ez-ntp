@@ -1,6 +1,6 @@
 1.9.7 (02/28/2014)
 
-1. Added the Wconversion and Wformat compiler flags.
+1. Added the Wformat and ansi compiler flags.
 2. Close the reading sides of a server's client sockets.
 3. New OS X make files.
 4. The shell scripts should return the results of the kill commands.
