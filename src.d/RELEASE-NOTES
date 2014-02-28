@@ -2,7 +2,7 @@
 
 1. Added the Wformat compiler flag.
 2. Close the reading side of a server's client socket.
-3. New OS X make files.
+3. New FreeBSD and OS X make files.
 4. The shell scripts should field the results of the kill commands.
 
 1.9.6 (02/20/2014)

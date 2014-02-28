@@ -1,0 +1,27 @@
+CC		= clang
+CC_OPTIONS	= -Wall -Werror -Wextra -Wformat -Wstack-protector \
+		  -fPIE -fstack-protector-all -pedantic -pie
+INCLUDES	= ez-common.h
+INCLUDE_PATH	= -I. -I/usr/include -I/usr/local/include
+INSTALL		= install
+INSTALL_OPS	= -o root -g root
+INSTALL_PATH	= /usr/local/bin
+LIBS		= -lpthread
+SRC		= ez-ntpd.c
+
+all:		ez-ntpd
+
+ez-ntpd:	$(INCLUDES) $(SRC)
+		$(CC) $(CC_OPTIONS) $(INCLUDE_PATH) -o ez-ntpd \
+		$(SRC) $(LIBS)
+
+clean:
+	rm -f core ez-ntpd ez-ntpd.core
+
+distclean: clean purge
+
+install: all
+	$(INSTALL) $(INSTALL_OPS) ez-ntpd $(INSTALL_PATH)/ez-ntpd
+
+purge:
+	rm -f *~
