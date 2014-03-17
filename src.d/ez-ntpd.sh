@@ -10,6 +10,7 @@ case "$1" in
 
 	echo "Starting the EzNTP daemon."
 	/usr/local/bin/ez-ntpd
+	exit $?
 	;;
     stop)
         if [ ! -e /var/run/ez-ntpd.pid ]
@@ -19,7 +20,7 @@ case "$1" in
 	else
 	    echo "Terminating the EzNTP daemon."
 	    kill -TERM `cat /var/run/ez-ntpd.pid`
-	    echo $?
+	    exit $?
 	fi
 
         ;;
