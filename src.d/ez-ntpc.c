@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
   struct sockaddr_in servaddr;
 
   for(i = 0; i < argc; i++)
-    if(strcmp(argv[i], "--disable_all_logs") == 0)
+    if(argv[i] && strcmp(argv[i], "--disable_all_logs") == 0)
       {
 	disable_all_logs = 1;
 	break;

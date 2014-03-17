@@ -1,3 +1,7 @@
+1.9.8 (03/21/2014)
+
+1. Inspect argv[i] in the main() functions.
+
 1.9.7 (02/28/2014)
 
 1. Added the Wformat compiler flag.
