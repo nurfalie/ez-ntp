@@ -1,33 +1,36 @@
 #!/bin/sh
 
+rc=0
+
 case "$1" in
     start)
         if [ -e /var/run/ez-ntpc.pid ]
 	then
     	    echo "The EzNTP client daemon may already be running."
-    	    exit 1
+    	    rc=1
+	else
+	    echo "Starting the EzNTP client daemon."
+	    /usr/local/bin/ez-ntpc -h 192.168.178.1 -p 50000
+	    rc=$?
 	fi
 
-	echo "Starting the EzNTP client daemon."
-	/usr/local/bin/ez-ntpc -h 192.168.178.1 -p 50000
-	exit $?
 	;;
     stop)
         if [ ! -e /var/run/ez-ntpc.pid ]
 	then
 	    echo "The EzNTP client daemon is not running."
-	    exit 1
+	    rc=1
 	else
 	    echo "Terminating the EzNTP client daemon."
 	    kill -TERM `cat /var/run/ez-ntpc.pid`
-	    exit $?
+	    rc=$?
 	fi
 
         ;;
     *)
 	echo "Usage: /etc/init.d/ez-ntpc.sh {start|stop}"
-	exit 1
+	rc=1
 	;;
 esac
 
-exit 0
+exit $rc
