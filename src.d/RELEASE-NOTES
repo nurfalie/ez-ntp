@@ -1,4 +1,4 @@
-1.9.8 (03/21/2014)
+1.9.8 (03/20/2014)
 
 1. Corrected exits in the shell scripts.
 2. Inspect argv[] in the main() functions.
