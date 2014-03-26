@@ -17,7 +17,7 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#define VERSION 1.9.8
+#define VERSION 1.9.9
 
 int sock_fd = -1;
 int terminated = 0;
