@@ -199,6 +199,7 @@ static void *thread_fun(void *arg)
   char *ptr = 0;
   char wr_buffer[2 * sizeof(long unsigned int) + 64];
   int fd = -1;
+  int n = 0;
   socklen_t length = 0;
   ssize_t remaining = 0;
   ssize_t rc = 0;
@@ -228,10 +229,14 @@ static void *thread_fun(void *arg)
   if(gettimeofday(&tp, (struct timezone *) 0) == 0)
     {
       (void) memset(wr_buffer, 0, sizeof(wr_buffer));
-      (void) snprintf
+      n = snprintf
 	(wr_buffer, sizeof(wr_buffer), "%lu,%lu\r\n",
 	 (unsigned long) tp.tv_sec,
 	 (unsigned long) tp.tv_usec);
+
+      if(!(n > 0 && n < (int) sizeof(wr_buffer)))
+	goto done_label;
+
       ptr = wr_buffer;
       remaining = (ssize_t) strlen(wr_buffer);
 
@@ -254,6 +259,8 @@ static void *thread_fun(void *arg)
     }
   else if(disable_all_logs == 0)
     syslog(LOG_ERR, "gettimeofday() failed, %s", strerror(errno));
+
+ done_label:
 
   if(close(fd) != 0)
     if(disable_all_logs == 0)

@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
   int err = 0;
   int goodtime = 0;
   int i = 0;
+  int n = 0;
   int port_num = -1;
   ssize_t rc = 0;
   struct stat st;
@@ -101,7 +102,10 @@ int main(int argc, char *argv[])
 	if(*argv != 0)
 	  {
 	    (void) memset(remote_host, 0, sizeof(remote_host));
-	    (void) snprintf(remote_host, sizeof(remote_host), "%s", *argv);
+	    n = snprintf(remote_host, sizeof(remote_host), "%s", *argv);
+
+	    if(!(n > 0 && n < (int) sizeof(remote_host)))
+	      (void) memset(remote_host, 0, sizeof(remote_host));
 	  }
 	else
 	  {

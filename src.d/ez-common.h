@@ -76,6 +76,7 @@ void preconnect_init(void)
   char pidbuf[64];
   int err = 0;
   int fd = -1;
+  int n = 0;
   size_t pidbuf_length = 0;
   ssize_t rc = 0;
   struct sigaction act;
@@ -123,8 +124,18 @@ void preconnect_init(void)
   else
     {
       (void) memset(pidbuf, 0, sizeof(pidbuf));
-      (void) snprintf(pidbuf, sizeof(pidbuf),
-		      "%lu", (unsigned long) getpid());
+      n = snprintf(pidbuf, sizeof(pidbuf), "%lu", (unsigned long) getpid());
+
+      if(!(n > 0 && n < (int) sizeof(pidbuf)))
+	{
+	  if(disable_all_logs == 0)
+	    syslog(LOG_ERR, "%s, exiting", "snprintf() failure");
+
+	  fprintf(stderr, "%s failed, exiting.\n", "snprintf()");
+	  (void) close(fd);
+	  exit(EXIT_FAILURE);
+	}
+
       pidbuf_length = strlen(pidbuf);
 
       if((rc = write(fd, pidbuf, pidbuf_length)) == -1)
