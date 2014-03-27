@@ -1,6 +1,8 @@
 1.9.9 (04/01/2014)
 
-1. Review snprintf() results.
+1. Added the host option to the daemon.
+2. Replaced the h and p options with host and port on the client.
+3. Review snprintf() results.
 
 1.9.8 (03/20/2014)
 

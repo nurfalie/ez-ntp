@@ -29,6 +29,7 @@
 ** -- System Includes --
 */
 
+#include <arpa/inet.h>
 #include <netdb.h>
 #include <pthread.h>
 
@@ -44,9 +45,10 @@ static void *thread_fun(void *);
 
 int main(int argc, char *argv[])
 {
+  char remote_host[128];
   int conn_fd = -1;
   int err = 0;
-  int i = 0;
+  int n = 0;
   int rc = 0;
   int tmpint = 0;
   pthread_t thread = 0;
@@ -56,9 +58,25 @@ int main(int argc, char *argv[])
   struct sockaddr_in servaddr;
   struct stat st;
 
-  for(i = 0; i < argc; i++)
-    if(argv[i] && strcmp(argv[i], "--disable_all_logs") == 0)
+  (void) argc;
+  (void) memset(remote_host, 0, sizeof(remote_host));
+
+  for(; *argv != 0; argv++)
+    if(strcmp(*argv, "--disable_all_logs") == 0)
       disable_all_logs = 1;
+    else if(strcmp(*argv, "--host") == 0)
+      {
+	argv++;
+
+	if(*argv != 0)
+	  {
+	    (void) memset(remote_host, 0, sizeof(remote_host));
+	    n = snprintf(remote_host, sizeof(remote_host), "%s", *argv);
+
+	    if(!(n > 0 && n < (int) sizeof(remote_host)))
+	      (void) memset(remote_host, 0, sizeof(remote_host));
+	  }
+      }
 
   if(disable_all_logs == 0)
     {
@@ -136,7 +154,12 @@ int main(int argc, char *argv[])
 
   memset(&servaddr, 0, sizeof(servaddr));
   servaddr.sin_family = AF_INET;
-  servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+  if(strlen(remote_host) > 0)
+    servaddr.sin_addr.s_addr = inet_addr(remote_host);
+  else
+    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+
   servaddr.sin_port = (in_port_t) serv->s_port;
 
   if(bind(sock_fd, (const struct sockaddr *) &servaddr, sizeof(servaddr)) != 0)

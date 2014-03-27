@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
   (void) memset(remote_host, 0, sizeof(remote_host));
 
   for(; *argv != 0; argv++)
-    if(strcmp(*argv, "-h") == 0)
+    if(strcmp(*argv, "--host") == 0)
       {
 	argv++;
 
@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 	    return EXIT_FAILURE;
 	  }
       }
-    else if(strcmp(*argv, "-p") == 0)
+    else if(strcmp(*argv, "--port") == 0)
       {
 	argv++;
 

@@ -10,7 +10,7 @@ case "$1" in
     	    rc=1
 	else
 	    echo "Starting the EzNTP client daemon."
-	    /usr/local/bin/ez-ntpc -h 192.168.178.1 -p 50000
+	    /usr/local/bin/ez-ntpc --host 192.168.178.1 --port 50000
 	    rc=$?
 	fi
 
