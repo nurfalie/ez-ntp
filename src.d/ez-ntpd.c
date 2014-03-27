@@ -59,8 +59,6 @@ int main(int argc, char *argv[])
   struct sockaddr_in servaddr;
   struct stat st;
 
-  (void) memset(remote_host, 0, sizeof(remote_host));
-
   for(i = 0; i < argc; i++)
     if(argv[i] && strcmp(argv[i], "--disable_all_logs") == 0)
       {
