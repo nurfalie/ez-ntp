@@ -17,9 +17,7 @@ all:
 clean:
 	$(MAKE) -f Makefile.$(SYSTEM).client clean
 	$(MAKE) -f Makefile.$(SYSTEM).daemon clean
-	rm -f ez-ntpc.core
-	rm -f ez-ntpd.core
-	rm -f core
+	rm -f core ez-ntpc.core ez-ntpd.core
 
 distclean: clean purge
 
