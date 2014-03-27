@@ -48,34 +48,24 @@ int main(int argc, char *argv[])
   char remote_host[128];
   int conn_fd = -1;
   int err = 0;
+  int i = 0;
   int n = 0;
+  int port_num = -1;
   int rc = 0;
   int tmpint = 0;
   pthread_t thread = 0;
   socklen_t length = 0;
-  struct servent *serv = 0;
   struct sockaddr client;
   struct sockaddr_in servaddr;
   struct stat st;
 
-  (void) argc;
   (void) memset(remote_host, 0, sizeof(remote_host));
 
-  for(; *argv != 0; argv++)
-    if(strcmp(*argv, "--disable_all_logs") == 0)
-      disable_all_logs = 1;
-    else if(strcmp(*argv, "--host") == 0)
+  for(i = 0; i < argc; i++)
+    if(argv[i] && strcmp(argv[i], "--disable_all_logs") == 0)
       {
-	argv++;
-
-	if(*argv != 0)
-	  {
-	    (void) memset(remote_host, 0, sizeof(remote_host));
-	    n = snprintf(remote_host, sizeof(remote_host), "%s", *argv);
-
-	    if(!(n > 0 && n < (int) sizeof(remote_host)))
-	      (void) memset(remote_host, 0, sizeof(remote_host));
-	  }
+	disable_all_logs = 1;
+	break;
       }
 
   if(disable_all_logs == 0)
@@ -90,6 +80,49 @@ int main(int argc, char *argv[])
 	syslog(LOG_ERR, "%s already exists, exiting", PIDFILE);
 
       fprintf(stderr, "%s already exists, exiting.\n", PIDFILE);
+      return EXIT_FAILURE;
+    }
+
+  (void) memset(remote_host, 0, sizeof(remote_host));
+
+  for(; *argv != 0; argv++)
+    if(strcmp(*argv, "--host") == 0)
+      {
+	argv++;
+
+	if(*argv != 0)
+	  {
+	    (void) memset(remote_host, 0, sizeof(remote_host));
+	    n = snprintf(remote_host, sizeof(remote_host), "%s", *argv);
+
+	    if(!(n > 0 && n < (int) sizeof(remote_host)))
+	      (void) memset(remote_host, 0, sizeof(remote_host));
+	  }
+      }
+    else if(strcmp(*argv, "--port") == 0)
+      {
+	argv++;
+
+	if(*argv != 0)
+	  port_num = atoi(*argv);
+	else
+	  {
+	    if(disable_all_logs == 0)
+	      syslog(LOG_ERR, "%s", "undefined port, exiting");
+
+	    fprintf(stderr, "%s", "Undefined port, exiting.\n");
+	    return EXIT_FAILURE;
+	  }
+      }
+
+  if(port_num < 0)
+    {
+      if(disable_all_logs == 0)
+	syslog(LOG_ERR, "%s",
+	       "missing remote port number, exiting");
+
+      fprintf(stderr, "%s",
+	      "Missing remote port number, exiting.\n");
       return EXIT_FAILURE;
     }
 
@@ -110,19 +143,6 @@ int main(int argc, char *argv[])
   */
 
   preconnect_init();
-
-  /*
-  ** Attach to a well-known port and await incoming requests.
-  */
-
-  if((serv = getservbyname("ez-ntp", "tcp")) == 0)
-    {
-      if(disable_all_logs == 0)
-	syslog(LOG_ERR, "%s", "ez-ntp not found in /etc/services, exiting");
-
-      fprintf(stderr, "%s", "ez-ntp not found in /etc/services, exiting.\n");
-      return EXIT_FAILURE;
-    }
 
   if((sock_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1)
     {
@@ -153,14 +173,14 @@ int main(int argc, char *argv[])
   */
 
   memset(&servaddr, 0, sizeof(servaddr));
-  servaddr.sin_family = AF_INET;
 
   if(strlen(remote_host) > 0)
     servaddr.sin_addr.s_addr = inet_addr(remote_host);
   else
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-  servaddr.sin_port = (in_port_t) serv->s_port;
+  servaddr.sin_family = AF_INET;
+  servaddr.sin_port = htons((uint16_t) port_num);
 
   if(bind(sock_fd, (const struct sockaddr *) &servaddr, sizeof(servaddr)) != 0)
     {

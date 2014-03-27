@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
 	  }
       }
 
-  if(port_num < 0  || strlen(remote_host) == 0)
+  if(port_num < 0 || strlen(remote_host) == 0)
     {
       if(disable_all_logs == 0)
 	syslog(LOG_ERR, "%s",
@@ -186,9 +186,9 @@ int main(int argc, char *argv[])
   */
 
   memset(&servaddr, 0, sizeof(servaddr));
+  servaddr.sin_addr.s_addr = inet_addr(remote_host);
   servaddr.sin_family = AF_INET;
   servaddr.sin_port = htons((uint16_t) port_num);
-  servaddr.sin_addr.s_addr = inet_addr(remote_host);
 
   while(terminated < 1)
     {

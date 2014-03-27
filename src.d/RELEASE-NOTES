@@ -1,7 +1,8 @@
 1.9.9 (03/28/2014)
 
-1. Added the host option to the daemon. If not provided, the daemon
-   will listen on any interface.
+1. Added the host and port options to the daemon. If a host is not provided,
+   the daemon will listen on any interface. The ez-ntp service is now
+   obsolete.
 2. Replaced the h and p options with host and port on the client.
 3. Review snprintf() results.
 
