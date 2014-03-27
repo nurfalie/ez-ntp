@@ -1,6 +1,7 @@
-1.9.9 (04/01/2014)
+1.9.9 (03/28/2014)
 
-1. Added the host option to the daemon.
+1. Added the host option to the daemon. If not provided, the daemon
+   will listen on any interface.
 2. Replaced the h and p options with host and port on the client.
 3. Review snprintf() results.
 
