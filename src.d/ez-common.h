@@ -136,7 +136,7 @@ void preconnect_init(void)
 	  exit(EXIT_FAILURE);
 	}
 
-      pidbuf_length = strlen(pidbuf);
+      pidbuf_length = strnlen(pidbuf, sizeof(pidbuf_length));
 
       if((rc = write(fd, pidbuf, pidbuf_length)) == -1)
 	{
