@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
 	  }
       }
 
-  if(port_num < 0 || strlen(remote_host) == 0)
+  if(port_num < 0 || strnlen(remote_host, sizeof(remote_host)) == 0)
     {
       if(disable_all_logs == 0)
 	syslog(LOG_ERR, "%s",
@@ -227,7 +227,7 @@ int main(int argc, char *argv[])
 
       for(goodtime = 0;;)
 	{
-	  if(strlen(buffer) > 2 && strstr(buffer, "\r\n") != 0)
+	  if(strnlen(buffer, sizeof(buffer)) > 2 && strstr(buffer, "\r\n") != 0)
 	    break;
 
 	  (void) memset(rd_buffer, 0, sizeof(rd_buffer));
@@ -243,20 +243,23 @@ int main(int argc, char *argv[])
 
 	  if(rc > 0)
 	    {
-	      if(sizeof(buffer) > strlen(buffer))
-		(void) strncat(buffer, rd_buffer,
-			       sizeof(buffer) - strlen(buffer) - 1);
+	      if(sizeof(buffer) > strnlen(buffer, sizeof(buffer)))
+		(void) strncat
+		  (buffer, rd_buffer,
+		   sizeof(buffer) - (strnlen(buffer,
+					     sizeof(buffer)) - 1) - 1);
 	      else
 		break;
 	    }
 	  else
 	    break;
 
-	  if(strlen(buffer) > 2 * sizeof(long unsigned int) + 16)
+	  if(strnlen(buffer, sizeof(buffer)) >
+	     2 * sizeof(long unsigned int) + 16)
 	    break;
 	}
 
-      if(strlen(buffer) > 2 && strstr(buffer, "\r\n") != 0)
+      if(strnlen(buffer, sizeof(buffer)) > 2 && strstr(buffer, "\r\n") != 0)
 	goodtime = 1;
 
       if(goodtime == 0)

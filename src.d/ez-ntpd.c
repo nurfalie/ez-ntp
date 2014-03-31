@@ -172,7 +172,7 @@ int main(int argc, char *argv[])
 
   memset(&servaddr, 0, sizeof(servaddr));
 
-  if(strlen(remote_host) > 0)
+  if(strnlen(remote_host, sizeof(remote_host)) > 0)
     servaddr.sin_addr.s_addr = inet_addr(remote_host);
   else
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -279,7 +279,7 @@ static void *thread_fun(void *arg)
 	goto done_label;
 
       ptr = wr_buffer;
-      remaining = (ssize_t) strlen(wr_buffer);
+      remaining = (ssize_t) strnlen(wr_buffer, sizeof(wr_buffer));
 
       while(remaining > 0)
 	{
