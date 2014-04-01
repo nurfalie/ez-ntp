@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
 	  }
       }
 
-  if(port_num < 0 || strnlen(remote_host, sizeof(remote_host)) == 0)
+  if(port_num < 0 || strlen(remote_host) == 0)
     {
       if(disable_all_logs == 0)
 	syslog(LOG_ERR, "%s",
