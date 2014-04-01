@@ -227,7 +227,8 @@ int main(int argc, char *argv[])
 
       for(goodtime = 0;;)
 	{
-	  if(strnlen(buffer, sizeof(buffer)) > 2 && strstr(buffer, "\r\n") != 0)
+	  if(strnlen(buffer, sizeof(buffer)) > 2 &&
+	     strstr(buffer, "\r\n") != 0)
 	    break;
 
 	  (void) memset(rd_buffer, 0, sizeof(rd_buffer));
@@ -246,8 +247,8 @@ int main(int argc, char *argv[])
 	      if(sizeof(buffer) > strnlen(buffer, sizeof(buffer)))
 		(void) strncat
 		  (buffer, rd_buffer,
-		   sizeof(buffer) - (strnlen(buffer,
-					     sizeof(buffer)) - 1) - 1);
+		   sizeof(buffer) - strnlen(buffer,
+					    sizeof(buffer) - 1) - 1);
 	      else
 		break;
 	    }
