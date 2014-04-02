@@ -134,14 +134,16 @@ int main(int argc, char *argv[])
 	  }
       }
 
-  if(port_num < 0 || strlen(remote_host) == 0)
+  if(port_num <= 0 || port_num > 65535 || strlen(remote_host) == 0)
     {
       if(disable_all_logs == 0)
 	syslog(LOG_ERR, "%s",
-	       "missing remote port number or remote hostname, exiting");
+	       "missing, or invalid, remote port number or "
+	       "remote hostname, exiting");
 
       fprintf(stderr, "%s",
-	      "Missing remote port number or remote hostname, exiting.\n");
+	      "Missing, or invalid, remote port number or "
+	      "remote hostname, exiting.\n");
       return EXIT_FAILURE;
     }
 

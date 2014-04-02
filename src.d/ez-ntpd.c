@@ -113,14 +113,14 @@ int main(int argc, char *argv[])
 	  }
       }
 
-  if(port_num < 0)
+  if(port_num <= 0 || port_num > 65535)
     {
       if(disable_all_logs == 0)
 	syslog(LOG_ERR, "%s",
-	       "missing remote port number, exiting");
+	       "missing, or invalid, remote port number, exiting");
 
       fprintf(stderr, "%s",
-	      "Missing remote port number, exiting.\n");
+	      "Missing, or invalid, remote port number, exiting.\n");
       return EXIT_FAILURE;
     }
 

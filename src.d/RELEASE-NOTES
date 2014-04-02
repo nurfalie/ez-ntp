@@ -1,6 +1,7 @@
 2.0.0 (04/04/2014)
 
-1. Use strnlen() where necessary.
+1. Port numbers should be within (0, 65535].
+2. Use strnlen() where necessary.
 
 1.9.9 (03/28/2014)
 
