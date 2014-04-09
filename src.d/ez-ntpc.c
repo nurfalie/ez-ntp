@@ -273,6 +273,7 @@ int main(int argc, char *argv[])
 	  if(disable_all_logs == 0)
 	    syslog(LOG_ERR, "incorrect time (%s)", buffer);
 
+	  (void) sleep(15);
 	  continue;
 	}
 
@@ -286,12 +287,14 @@ int main(int argc, char *argv[])
 	    {
 	      (void) close(sock_fd);
 	      sock_fd = -1;
+	      (void) sleep(15);
 	      continue;
 	    }
 	  else if(endptr == tmp)
 	    {
 	      (void) close(sock_fd);
 	      sock_fd = -1;
+	      (void) sleep(15);
 	      continue;
 	    }
 	}
@@ -299,6 +302,7 @@ int main(int argc, char *argv[])
 	{
 	  (void) close(sock_fd);
 	  sock_fd = -1;
+	  (void) sleep(15);
 	  continue;
 	}
 
@@ -312,12 +316,14 @@ int main(int argc, char *argv[])
 	    {
 	      (void) close(sock_fd);
 	      sock_fd = -1;
+	      (void) sleep(15);
 	      continue;
 	    }
 	  else if(endptr == tmp)
 	    {
 	      (void) close(sock_fd);
 	      sock_fd = -1;
+	      (void) sleep(15);
 	      continue;
 	    }
 	}
@@ -325,6 +331,7 @@ int main(int argc, char *argv[])
 	{
 	  (void) close(sock_fd);
 	  sock_fd = -1;
+	  (void) sleep(15);
 	  continue;
 	}
 
