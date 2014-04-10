@@ -351,6 +351,8 @@ int main(int argc, char *argv[])
 		    syslog(LOG_INFO, "%s",
 			   "adjusted system time (settimeofday())");
 		}
+	      else if(disable_all_logs == 0)
+		syslog(LOG_INFO, "%s", "time beyond acceptable limits");
 	    }
 	  else if(labs(home_tp.tv_usec - server_tp.tv_usec) >= 5)
 	    {
@@ -366,6 +368,8 @@ int main(int argc, char *argv[])
 	      else if(disable_all_logs == 0)
 		syslog(LOG_INFO, "%s", "adjusted system time (adjtime())");
 	    }
+	  else if(disable_all_logs == 0)
+	    syslog(LOG_INFO, "%s", "time beyond acceptable limits");
 	}
       else if(disable_all_logs == 0)
 	syslog(LOG_ERR, "gettimeofday() failed, %s", strerror(errno));
