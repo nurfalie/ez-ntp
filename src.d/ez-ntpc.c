@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
 	  (void) memset(rd_buffer, 0, sizeof(rd_buffer));
 
 	  if((rc = recv(sock_fd, rd_buffer, sizeof(rd_buffer) - 1,
-			MSG_PEEK)) > 0)
+			MSG_DONTWAIT | MSG_PEEK)) > 0)
 	    {
 	      (void) memset(rd_buffer, 0, sizeof(rd_buffer));
 	      (void) alarm(8);
