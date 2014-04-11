@@ -1,8 +1,9 @@
 2.0.1 (04/11/2014)
 
-1. Added MSG_DONTWAIT to peek recv() in client.
-2. Added more event logs.
-3. Prevent errant loops in the client.
+1. Added more event logs.
+2. Decreased sleep times from 15 seconds to 5 seconds in the client.
+3. Prevent blocking peek in client.
+4. Prevent errant loops in the client.
 
 2.0.0 (04/04/2014)
 

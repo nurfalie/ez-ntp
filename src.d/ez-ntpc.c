@@ -198,9 +198,9 @@ int main(int argc, char *argv[])
 	{
 	  if(disable_all_logs == 0)
 	    syslog(LOG_ERR, "socket() failed, %s, "
-		   "trying again in 15 seconds", strerror(errno));
+		   "trying again in 5 seconds", strerror(errno));
 
-	  (void) sleep(15);
+	  (void) sleep(5);
 	}
 
       (void) alarm(8);
@@ -212,11 +212,11 @@ int main(int argc, char *argv[])
 
 	  if(disable_all_logs == 0)
 	    syslog(LOG_ERR, "connect() failed, %s, "
-		   "trying again in 15 seconds", strerror(errno));
+		   "trying again in 5 seconds", strerror(errno));
 
 	  (void) close(sock_fd);
 	  sock_fd = -1;
-	  (void) sleep(15);
+	  (void) sleep(5);
 	  continue;
 	}
       else
@@ -233,16 +233,20 @@ int main(int argc, char *argv[])
 	     strstr(buffer, "\r\n") != 0)
 	    break;
 
+	  (void) alarm(8);
 	  (void) memset(rd_buffer, 0, sizeof(rd_buffer));
 
 	  if((rc = recv(sock_fd, rd_buffer, sizeof(rd_buffer) - 1,
-			MSG_DONTWAIT | MSG_PEEK)) > 0)
+			MSG_PEEK)) > 0)
 	    {
+	      (void) alarm(0);
 	      (void) memset(rd_buffer, 0, sizeof(rd_buffer));
 	      (void) alarm(8);
 	      rc = recv(sock_fd, rd_buffer, (size_t) rc, MSG_WAITALL);
 	      (void) alarm(0);
 	    }
+	  else
+	    (void) alarm(0);
 
 	  if(rc > 0)
 	    {
@@ -273,7 +277,7 @@ int main(int argc, char *argv[])
 	  if(disable_all_logs == 0)
 	    syslog(LOG_ERR, "incorrect time (%s)", buffer);
 
-	  (void) sleep(15);
+	  (void) sleep(5);
 	  continue;
 	}
 
@@ -287,14 +291,14 @@ int main(int argc, char *argv[])
 	    {
 	      (void) close(sock_fd);
 	      sock_fd = -1;
-	      (void) sleep(15);
+	      (void) sleep(5);
 	      continue;
 	    }
 	  else if(endptr == tmp)
 	    {
 	      (void) close(sock_fd);
 	      sock_fd = -1;
-	      (void) sleep(15);
+	      (void) sleep(5);
 	      continue;
 	    }
 	}
@@ -302,7 +306,7 @@ int main(int argc, char *argv[])
 	{
 	  (void) close(sock_fd);
 	  sock_fd = -1;
-	  (void) sleep(15);
+	  (void) sleep(5);
 	  continue;
 	}
 
@@ -316,14 +320,14 @@ int main(int argc, char *argv[])
 	    {
 	      (void) close(sock_fd);
 	      sock_fd = -1;
-	      (void) sleep(15);
+	      (void) sleep(5);
 	      continue;
 	    }
 	  else if(endptr == tmp)
 	    {
 	      (void) close(sock_fd);
 	      sock_fd = -1;
-	      (void) sleep(15);
+	      (void) sleep(5);
 	      continue;
 	    }
 	}
@@ -331,7 +335,7 @@ int main(int argc, char *argv[])
 	{
 	  (void) close(sock_fd);
 	  sock_fd = -1;
-	  (void) sleep(15);
+	  (void) sleep(5);
 	  continue;
 	}
 
@@ -376,7 +380,7 @@ int main(int argc, char *argv[])
 
       (void) close(sock_fd);
       sock_fd = -1;
-      (void) sleep(15);
+      (void) sleep(5);
     }
 
   return EXIT_SUCCESS;
