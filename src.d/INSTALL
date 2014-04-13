@@ -1,9 +1,5 @@
-Building and Installing:
-	1. Modify the make files to fit your system(s).
-	2. Execute make. Please use gmake on FreeBSD.
-	3. Execute sudo make install. Please use gmake on FreeBSD.
-	4. Copy the startup files into the appropriate initialization
-           directories.
-
-Server Configuration:
-	Edit /etc/services and add "ez-ntp		50000/tcp".
+1. Modify the make files to fit your system(s).
+2. Execute make. Please use gmake on FreeBSD.
+3. Execute sudo make install. Please use gmake on FreeBSD.
+4. Copy the script files into the appropriate initialization
+   directories.
