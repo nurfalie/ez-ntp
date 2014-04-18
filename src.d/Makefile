@@ -1,3 +1,7 @@
+GCC_OPTIONS	= -Wall -Werror -Wextra -Wformat -Wpointer-arith \
+		  -Wstack-protector -Wstrict-overflow=5 \
+		  -Wstrict-prototypes \
+		  -fPIE -fstack-protector-all -pedantic -pie
 UNAME := $(shell uname)
 
 ifeq ($(UNAME), Darwin)
