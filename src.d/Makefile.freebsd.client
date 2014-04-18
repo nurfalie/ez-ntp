@@ -1,5 +1,7 @@
 CC		= clang
-CC_OPTIONS	= -Wall -Werror -Wextra -Wformat -Wstack-protector \
+CC_OPTIONS	= -Wall -Werror -Wextra -Wformat -Wpointer-arith \
+		  -Wstack-protector \
+		  -Wstrict-overflow=5 -Wstrict-prototypes \
 		  -fPIE -fstack-protector-all -pedantic -pie
 INCLUDES	= ez-common.h
 INCLUDE_PATH	= -I. -I/usr/include -I/usr/local/include
