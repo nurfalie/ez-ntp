@@ -1,7 +1,8 @@
 2.0.1 (04/22/2014)
 
 1. Compiler flags.
-2. Version remains at 2.0.1.
+2. Modified FreeBSD group ownership from root to wheel.
+3. Version remains at 2.0.1.
 
 2.0.1 (04/18/2014)
 

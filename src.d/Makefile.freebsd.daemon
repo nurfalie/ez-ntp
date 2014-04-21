@@ -6,7 +6,7 @@ CC_OPTIONS	= -Wall -Werror -Wextra -Wformat=2 -Wpointer-arith \
 INCLUDES	= ez-common.h
 INCLUDE_PATH	= -I. -I/usr/include -I/usr/local/include
 INSTALL		= install
-INSTALL_OPS	= -o root -g root
+INSTALL_OPS	= -o root -g wheel
 INSTALL_PATH	= /usr/local/bin
 LIBS		= -lpthread
 SRC		= ez-ntpd.c
