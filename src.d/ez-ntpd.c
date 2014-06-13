@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
   int n = 0;
   int rc = 0;
   int tmpint = 0;
-  long int port_num = -1;
+  long port_num = -1;
   pthread_t thread = 0;
   socklen_t length = 0;
   struct sockaddr client;

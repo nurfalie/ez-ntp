@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
   int goodtime = 0;
   int i = 0;
   int n = 0;
-  long int port_num = -1;
+  long port_num = -1;
   ssize_t rc = 0;
   struct stat st;
   struct timeval home_tp;
