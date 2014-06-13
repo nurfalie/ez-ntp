@@ -45,14 +45,15 @@ static void *thread_fun(void *);
 
 int main(int argc, char *argv[])
 {
+  char *endptr;
   char remote_host[128];
   int conn_fd = -1;
   int err = 0;
   int i = 0;
   int n = 0;
-  int port_num = -1;
   int rc = 0;
   int tmpint = 0;
+  long int port_num = -1;
   pthread_t thread = 0;
   socklen_t length = 0;
   struct sockaddr client;
@@ -102,7 +103,18 @@ int main(int argc, char *argv[])
 	argv++;
 
 	if(*argv != 0)
-	  port_num = atoi(*argv);
+	  {
+	    port_num = strtol(*argv, &endptr, 10);
+
+	    if(errno == EINVAL || errno == ERANGE || endptr == *argv)
+	      {
+		if(disable_all_logs == 0)
+		  syslog(LOG_ERR, "%s", "strtol() failure, exiting");
+
+		fprintf(stderr, "%s", "strtol() failure, exiting.\n");
+		return EXIT_FAILURE;
+	      }
+	  }
 	else
 	  {
 	    if(disable_all_logs == 0)

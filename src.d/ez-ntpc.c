@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
   int goodtime = 0;
   int i = 0;
   int n = 0;
-  int port_num = -1;
+  long int port_num = -1;
   ssize_t rc = 0;
   struct stat st;
   struct timeval home_tp;
@@ -123,7 +123,18 @@ int main(int argc, char *argv[])
 	argv++;
 
 	if(*argv != 0)
-	  port_num = atoi(*argv);
+	  {
+	    port_num = strtol(*argv, &endptr, 10);
+
+	    if(errno == EINVAL || errno == ERANGE || endptr == *argv)
+	      {
+		if(disable_all_logs == 0)
+		  syslog(LOG_ERR, "%s", "strtol() failure, exiting");
+
+		fprintf(stderr, "%s", "strtol() failure, exiting.\n");
+		return EXIT_FAILURE;
+	      }
+	  }
 	else
 	  {
 	    if(disable_all_logs == 0)
