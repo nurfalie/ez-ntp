@@ -282,10 +282,8 @@ static void *thread_fun(void *arg)
   if(gettimeofday(&tp, (struct timezone *) 0) == 0)
     {
       (void) memset(wr_buffer, 0, sizeof(wr_buffer));
-      n = snprintf
-	(wr_buffer, sizeof(wr_buffer), "%lu,%lu\r\n",
-	 (unsigned long) tp.tv_sec,
-	 (unsigned long) tp.tv_usec);
+      n = snprintf(wr_buffer, sizeof(wr_buffer),
+		   "%ld,%ld\r\n", (long) tp.tv_sec, (long) tp.tv_usec);
 
       if(!(n > 0 && n < (int) sizeof(wr_buffer)))
 	goto done_label;

@@ -17,7 +17,7 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#define VERSION 2.0.3
+#define VERSION 2.0.4
 
 int sock_fd = -1;
 int terminated = 0;
@@ -124,8 +124,7 @@ void preconnect_init(void)
   else
     {
       (void) memset(pidbuf, 0, sizeof(pidbuf));
-      n = snprintf(pidbuf, sizeof(pidbuf),
-		   "%ld", (long) getpid());
+      n = snprintf(pidbuf, sizeof(pidbuf), "%ld", (long) getpid());
 
       if(!(n > 0 && n < (int) sizeof(pidbuf)))
 	{

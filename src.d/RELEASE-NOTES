@@ -1,3 +1,8 @@
+2.0.4 (06/16/2014)
+
+1. Corrected Wformat usage in several make files. Use Wformat=2.
+2. Use %ld specifier for tv_sec and tv_usec in snprintf().
+
 2.0.3 (06/15/2014)
 
 1. Use %ld specifier for pid_t in snprintf().
