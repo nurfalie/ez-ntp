@@ -72,7 +72,7 @@
 
 1.9.4 (02/06/2014)
 
-1. Corrected snprintf() arguments in ez-ntpd.c. 
+1. Corrected snprintf() arguments in ez-ntpd.c.
 
 1.9.3 (02/06/2014)
 
@@ -184,12 +184,12 @@
    --disable_log to ez-ntpc.sh.
 2. Replaced settimeofday() with adjtime().
 3. The files /var/run/ez-ntpc.pid and /var/run/ez-ntpd.pid have been replaced
-   by ez-ntpc.lock and ez-ntpd.lock. 
-4. Updated the .sh files. 
+   by ez-ntpc.lock and ez-ntpd.lock.
+4. Updated the .sh files.
 
 1.1.0 (08/15/2005)
 
-1. Prevent the client from entering an endless recv() call. 
+1. Prevent the client from entering an endless recv() call.
 
 1.0.0 (08/14/2005)
 
