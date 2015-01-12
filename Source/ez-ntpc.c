@@ -251,9 +251,14 @@ int main(int argc, char *argv[])
 			MSG_PEEK)) > 0)
 	    {
 	      (void) alarm(0);
+
+	      if((size_t) rc > sizeof(rd_buffer) - 1)
+		rc = sizeof(rd_buffer) - 1;
+
 	      (void) memset(rd_buffer, 0, sizeof(rd_buffer));
 	      (void) alarm(8);
-	      rc = recv(sock_fd, rd_buffer, (size_t) rc, MSG_WAITALL);
+	      rc = recv
+		(sock_fd, rd_buffer, (size_t) rc, MSG_WAITALL);
 	      (void) alarm(0);
 	    }
 	  else
