@@ -1,3 +1,7 @@
+2.0.6 (02/08/2015)
+
+1. Ignore the SIGPIPE signal.
+
 2.0.5 (01/17/2014)
 
 1. Cautiously inspect the value returned by recv().

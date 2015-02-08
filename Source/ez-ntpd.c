@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  (void) memset(remote_host, 0, sizeof(remote_host));
+  memset(remote_host, 0, sizeof(remote_host));
 
   for(; *argv != 0; argv++)
     if(strcmp(*argv, "--host") == 0)
@@ -91,11 +91,11 @@ int main(int argc, char *argv[])
 
 	if(*argv != 0)
 	  {
-	    (void) memset(remote_host, 0, sizeof(remote_host));
+	    memset(remote_host, 0, sizeof(remote_host));
 	    n = snprintf(remote_host, sizeof(remote_host), "%s", *argv);
 
 	    if(!(n > 0 && n < (int) sizeof(remote_host)))
-	      (void) memset(remote_host, 0, sizeof(remote_host));
+	      memset(remote_host, 0, sizeof(remote_host));
 	  }
       }
     else if(strcmp(*argv, "--port") == 0)
@@ -232,7 +232,7 @@ int main(int argc, char *argv[])
 		syslog
 		  (LOG_ERR, "pthread_create() failed, error code = %d", rc);
 
-	      (void) close(conn_fd);
+	      close(conn_fd);
 	    }
 	}
       else
@@ -240,7 +240,7 @@ int main(int argc, char *argv[])
 	  if(disable_all_logs == 0)
 	    syslog(LOG_ERR, "accept() failed, %s", strerror(errno));
 
-	  (void) sleep(1);
+	  sleep(1);
 	}
     }
 
@@ -262,7 +262,7 @@ static void *thread_fun(void *arg)
   if(arg)
     fd = *((int *) arg);
 
-  (void) pthread_detach(pthread_self());
+  pthread_detach(pthread_self());
 
   if(fd < 0)
     return 0;
@@ -281,7 +281,7 @@ static void *thread_fun(void *arg)
 
   if(gettimeofday(&tp, (struct timezone *) 0) == 0)
     {
-      (void) memset(wr_buffer, 0, sizeof(wr_buffer));
+      memset(wr_buffer, 0, sizeof(wr_buffer));
       n = snprintf(wr_buffer, sizeof(wr_buffer),
 		   "%ld,%ld\r\n", (long) tp.tv_sec, (long) tp.tv_usec);
 

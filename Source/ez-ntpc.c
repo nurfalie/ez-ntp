@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  (void) memset(remote_host, 0, sizeof(remote_host));
+  memset(remote_host, 0, sizeof(remote_host));
 
   for(; *argv != 0; argv++)
     if(strcmp(*argv, "--host") == 0)
@@ -101,11 +101,11 @@ int main(int argc, char *argv[])
 
 	if(*argv != 0)
 	  {
-	    (void) memset(remote_host, 0, sizeof(remote_host));
+	    memset(remote_host, 0, sizeof(remote_host));
 	    n = snprintf(remote_host, sizeof(remote_host), "%s", *argv);
 
 	    if(!(n > 0 && n < (int) sizeof(remote_host)))
-	      (void) memset(remote_host, 0, sizeof(remote_host));
+	      memset(remote_host, 0, sizeof(remote_host));
 	  }
 	else
 	  {
@@ -177,11 +177,11 @@ int main(int argc, char *argv[])
   preconnect_init();
 
   /*
-  ** Establish handlers for SIGALRM and SIGTERM.
+  ** Establish handlers for SIGALRM.
   */
 
   act.sa_handler = onalarm;
-  (void) sigemptyset(&act.sa_mask);
+  sigemptyset(&act.sa_mask);
   act.sa_flags = 0;
 
   if(sigaction(SIGALRM, &act, 0) != 0)
@@ -211,32 +211,32 @@ int main(int argc, char *argv[])
 	    syslog(LOG_ERR, "socket() failed, %s, "
 		   "trying again in 5 seconds", strerror(errno));
 
-	  (void) sleep(5);
+	  sleep(5);
 	}
 
-      (void) alarm(8);
+      alarm(8);
 
       if(connect(sock_fd, (const struct sockaddr *) &servaddr,
 		 sizeof(servaddr)) == -1)
 	{
-	  (void) alarm(0);
+	  alarm(0);
 
 	  if(disable_all_logs == 0)
 	    syslog(LOG_ERR, "connect() failed, %s, "
 		   "trying again in 5 seconds", strerror(errno));
 
-	  (void) close(sock_fd);
+	  close(sock_fd);
 	  sock_fd = -1;
-	  (void) sleep(5);
+	  sleep(5);
 	  continue;
 	}
       else
-	(void) alarm(0);
+	alarm(0);
 
       if(terminated > 0)
 	break;
 
-      (void) memset(buffer, 0, sizeof(buffer));
+      memset(buffer, 0, sizeof(buffer));
 
       for(goodtime = 0;;)
 	{
@@ -244,30 +244,29 @@ int main(int argc, char *argv[])
 	     strstr(buffer, "\r\n") != 0)
 	    break;
 
-	  (void) alarm(8);
-	  (void) memset(rd_buffer, 0, sizeof(rd_buffer));
+	  alarm(8);
+	  memset(rd_buffer, 0, sizeof(rd_buffer));
 
 	  if((rc = recv(sock_fd, rd_buffer, sizeof(rd_buffer) - 1,
 			MSG_PEEK)) > 0)
 	    {
-	      (void) alarm(0);
+	      alarm(0);
 
 	      if((size_t) rc > sizeof(rd_buffer) - 1)
 		rc = sizeof(rd_buffer) - 1;
 
-	      (void) memset(rd_buffer, 0, sizeof(rd_buffer));
-	      (void) alarm(8);
-	      rc = recv
-		(sock_fd, rd_buffer, (size_t) rc, MSG_WAITALL);
-	      (void) alarm(0);
+	      memset(rd_buffer, 0, sizeof(rd_buffer));
+	      alarm(8);
+	      rc = recv(sock_fd, rd_buffer, (size_t) rc, MSG_WAITALL);
+	      alarm(0);
 	    }
 	  else
-	    (void) alarm(0);
+	    alarm(0);
 
 	  if(rc > 0)
 	    {
 	      if(sizeof(buffer) > strnlen(buffer, sizeof(buffer)))
-		(void) strncat
+		strncat
 		  (buffer, rd_buffer,
 		   sizeof(buffer) - strnlen(buffer,
 					    sizeof(buffer) - 1) - 1);
@@ -287,13 +286,13 @@ int main(int argc, char *argv[])
 
       if(goodtime == 0)
 	{
-	  (void) close(sock_fd);
+	  close(sock_fd);
 	  sock_fd = -1;
 
 	  if(disable_all_logs == 0)
 	    syslog(LOG_ERR, "incorrect time (%s)", buffer);
 
-	  (void) sleep(5);
+	  sleep(5);
 	  continue;
 	}
 
@@ -305,24 +304,24 @@ int main(int argc, char *argv[])
 
 	  if(errno == EINVAL || errno == ERANGE)
 	    {
-	      (void) close(sock_fd);
+	      close(sock_fd);
 	      sock_fd = -1;
-	      (void) sleep(5);
+	      sleep(5);
 	      continue;
 	    }
 	  else if(endptr == tmp)
 	    {
-	      (void) close(sock_fd);
+	      close(sock_fd);
 	      sock_fd = -1;
-	      (void) sleep(5);
+	      sleep(5);
 	      continue;
 	    }
 	}
       else
 	{
-	  (void) close(sock_fd);
+	  close(sock_fd);
 	  sock_fd = -1;
-	  (void) sleep(5);
+	  sleep(5);
 	  continue;
 	}
 
@@ -334,24 +333,24 @@ int main(int argc, char *argv[])
 
 	  if(errno == EINVAL || errno == ERANGE)
 	    {
-	      (void) close(sock_fd);
+	      close(sock_fd);
 	      sock_fd = -1;
-	      (void) sleep(5);
+	      sleep(5);
 	      continue;
 	    }
 	  else if(endptr == tmp)
 	    {
-	      (void) close(sock_fd);
+	      close(sock_fd);
 	      sock_fd = -1;
-	      (void) sleep(5);
+	      sleep(5);
 	      continue;
 	    }
 	}
       else
 	{
-	  (void) close(sock_fd);
+	  close(sock_fd);
 	  sock_fd = -1;
-	  (void) sleep(5);
+	  sleep(5);
 	  continue;
 	}
 
@@ -394,9 +393,9 @@ int main(int argc, char *argv[])
       else if(disable_all_logs == 0)
 	syslog(LOG_ERR, "gettimeofday() failed, %s", strerror(errno));
 
-      (void) close(sock_fd);
+      close(sock_fd);
       sock_fd = -1;
-      (void) sleep(5);
+      sleep(5);
     }
 
   return EXIT_SUCCESS;

@@ -17,7 +17,7 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#define VERSION 2.0.5
+#define VERSION 2.0.6
 
 int sock_fd = -1;
 int terminated = 0;
@@ -92,11 +92,20 @@ void preconnect_init(void)
     }
 
   /*
+  ** Ignore SIGPIPE.
+  */
+
+  act.sa_handler = SIG_IGN;
+  sigemptyset(&act.sa_mask);
+  act.sa_flags = 0;
+  sigaction(SIGPIPE, &act, 0);
+
+  /*
   ** Configure a handler for the SIGTERM signal.
   */
 
   act.sa_handler = onterm;
-  (void) sigemptyset(&act.sa_mask);
+  sigemptyset(&act.sa_mask);
   act.sa_flags = 0;
 
   if(sigaction(SIGTERM, &act, 0) != 0)
@@ -123,7 +132,7 @@ void preconnect_init(void)
     }
   else
     {
-      (void) memset(pidbuf, 0, sizeof(pidbuf));
+      memset(pidbuf, 0, sizeof(pidbuf));
       n = snprintf(pidbuf, sizeof(pidbuf), "%ld", (long) getpid());
 
       if(!(n > 0 && n < (int) sizeof(pidbuf)))
@@ -132,7 +141,7 @@ void preconnect_init(void)
 	    syslog(LOG_ERR, "%s, exiting", "snprintf() failure");
 
 	  fprintf(stderr, "%s failed, exiting.\n", "snprintf()");
-	  (void) close(fd);
+	  close(fd);
 	  exit(EXIT_FAILURE);
 	}
 
@@ -148,7 +157,7 @@ void preconnect_init(void)
 
 	  fprintf(stderr, "write() failed for %s, %s, exiting.\n",
 		  PIDFILE, strerror(err));
-	  (void) close(fd);
+	  close(fd);
 	  exit(EXIT_FAILURE);
 	}
       else if((ssize_t) pidbuf_length != rc)
@@ -201,7 +210,7 @@ void turn_into_daemon(void)
       exit(EXIT_FAILURE);
     }
 
-  (void) umask(0);
+  umask(0);
 
   if((pid = fork()) < 0)
     {
@@ -214,7 +223,7 @@ void turn_into_daemon(void)
   else if(pid != 0)
     exit(EXIT_SUCCESS);
 
-  (void) setsid();
+  setsid();
 
   if(chdir("/") != 0)
     {
@@ -231,7 +240,7 @@ void turn_into_daemon(void)
     rl.rlim_max = 2048;
 
   for(i = 0; i < rl.rlim_max; i++)
-    (void) close((int) i);
+    close((int) i);
 
   fd0 = open("/dev/null", O_RDWR);
   fd1 = dup(0);
