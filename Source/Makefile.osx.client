@@ -1,9 +1,9 @@
-GCC		= gcc
-GCC_OPTIONS	= -Wall -Wconversion -Werror -Wextra -Wformat=2 \
+CC		= clang
+CC_OPTIONS	= -Wall -Wconversion -Werror -Wextra -Wformat=2 \
 		  -Wpointer-arith -Wsign-conversion \
 		  -Wstack-protector -Wstrict-overflow=5 \
 		  -Wstrict-prototypes \
-		  -fPIE -fstack-protector-all -pedantic -pie
+		  -fPIE -fstack-protector-all -pedantic
 INCLUDES	= ez-common.h
 INCLUDE_PATH	= -I. -I/usr/include -I/usr/local/include
 INSTALL		= install
@@ -15,7 +15,7 @@ SRC		= ez-ntpc.c
 all:		ez-ntpc
 
 ez-ntpc:	$(INCLUDES) $(SRC)
-		$(GCC) $(GCC_OPTIONS) $(INCLUDE_PATH) -o ez-ntpc \
+		$(CC) $(CC_OPTIONS) $(INCLUDE_PATH) -o ez-ntpc \
 		$(SRC) $(LIBS)
 
 clean:
