@@ -1,6 +1,6 @@
 GCC		= gcc
-GCC_OPTIONS	= -Wall -Werror -Wextra -Wformat=2 \
-		  -Wl,-z,relro -Wpointer-arith \
+GCC_OPTIONS	= -Wall -Wconversion -Werror -Wextra -Wformat=2 \
+		  -Wl,-z,relro -Wpointer-arith -Wsign-conversion \
 		  -Wstack-protector -Wstrict-overflow=5 \
 		  -Wstrict-prototypes \
 		  -fPIE -fstack-protector-all -pedantic -pie
