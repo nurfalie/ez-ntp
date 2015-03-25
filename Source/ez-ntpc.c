@@ -329,7 +329,11 @@ int main(int argc, char *argv[])
 
       if(tmp != 0)
 	{
+#if defined(__APPLE__)
+	  server_tp.tv_usec = strtoi(tmp, &endptr, 10);
+#else
 	  server_tp.tv_usec = strtol(tmp, &endptr, 10);
+#endif
 
 	  if(errno == EINVAL || errno == ERANGE)
 	    {
