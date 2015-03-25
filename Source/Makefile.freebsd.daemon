@@ -1,6 +1,6 @@
 CC		= clang
-CC_OPTIONS	= -Wall -Werror -Wextra -Wformat=2 -Wpointer-arith \
-		  -Wstack-protector \
+CC_OPTIONS	= -Wall -Wconversion -Werror -Wextra -Wformat=2 \
+		  -Wpointer-arith -Wsign-conversion -Wstack-protector \
 		  -Wstrict-overflow=5 -Wstrict-prototypes \
 		  -fPIE -fstack-protector-all -pedantic -pie
 INCLUDES	= ez-common.h

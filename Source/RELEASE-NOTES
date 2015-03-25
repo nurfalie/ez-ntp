@@ -1,3 +1,9 @@
+2.0.6 (04/01/2015)
+
+1. Additional warnings.
+2. Use clang on OS X.
+3. Version remains unchanged.
+
 2.0.6 (02/08/2015)
 
 1. Ignore the SIGPIPE signal.
