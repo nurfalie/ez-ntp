@@ -1,8 +1,9 @@
-2.0.6 (04/01/2015)
+2.0.7 (04/01/2015)
 
 1. Additional warnings.
-2. Use clang on OS X.
-3. Version remains unchanged.
+2. Prevent recursive onterm().
+3. Terminate if onexit() or onterm() cannot be registered.
+4. Use clang on OS X.
 
 2.0.6 (02/08/2015)
 

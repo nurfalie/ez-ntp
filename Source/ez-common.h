@@ -17,7 +17,7 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#define VERSION 2.0.6
+#define VERSION 2.0.7
 
 int sock_fd = -1;
 int terminated = 0;
@@ -67,6 +67,10 @@ void onexit(void)
 void onterm(int notused)
 {
   (void) notused;
+
+  if(terminated)
+    _Exit(EXIT_SUCCESS);
+
   terminated = 1;
   exit(EXIT_SUCCESS);
 }
@@ -89,6 +93,7 @@ void preconnect_init(void)
 	syslog(LOG_ERR, "atexit() failed, %s", strerror(err));
 
       fprintf(stderr, "atexit() failed, %s.\n", strerror(err));
+      exit(EXIT_FAILURE);
     }
 
   /*
@@ -116,6 +121,7 @@ void preconnect_init(void)
 	syslog(LOG_ERR, "sigaction() failed, %s", strerror(err));
 
       fprintf(stderr, "sigaction() failed, %s.\n", strerror(err));
+      exit(EXIT_FAILURE);
     }
 
   if((fd = open(PIDFILE, O_CREAT | O_EXCL | O_WRONLY, S_IRUSR)) == -1)
