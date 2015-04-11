@@ -17,7 +17,7 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#define VERSION 2.0.7
+#define VERSION 2.0.8
 
 int sock_fd = -1;
 int terminated = 0;
@@ -97,9 +97,13 @@ void preconnect_init(void)
     }
 
   /*
-  ** Ignore SIGPIPE.
+  ** Ignore SIGHUP and SIGPIPE.
   */
 
+  act.sa_handler = SIG_IGN;
+  sigemptyset(&act.sa_mask);
+  act.sa_flags = 0;
+  sigaction(SIGHUP, &act, 0);
   act.sa_handler = SIG_IGN;
   sigemptyset(&act.sa_mask);
   act.sa_flags = 0;
