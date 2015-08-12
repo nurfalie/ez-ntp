@@ -39,7 +39,7 @@
 
 #define PIDFILE "/var/run/ez-ntpd.pid"
 
-#include <ez-common.h>
+#include "ez-common.h"
 
 static void *thread_fun(void *);
 
@@ -232,6 +232,7 @@ int main(int argc, char *argv[])
 		syslog
 		  (LOG_ERR, "pthread_create() failed, error code = %d", rc);
 
+	      shutdown(conn_fd, SHUT_WR);
 	      close(conn_fd);
 	    }
 	}
@@ -312,6 +313,8 @@ static void *thread_fun(void *arg)
     syslog(LOG_ERR, "gettimeofday() failed, %s", strerror(errno));
 
  done_label:
+
+  shutdown(fd, SHUT_WR);
 
   if(close(fd) != 0)
     if(disable_all_logs == 0)

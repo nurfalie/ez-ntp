@@ -17,7 +17,7 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#define VERSION 2.0.8
+#define VERSION 2.0.9
 
 int sock_fd = -1;
 int terminated = 0;
@@ -45,6 +45,8 @@ void onexit(void)
 
   if(sock_fd > -1)
     {
+      shutdown(sock_fd, SHUT_RDWR);
+
       if(close(sock_fd) != 0)
 	{
 	  err = errno;

@@ -1,3 +1,7 @@
+2.0.9 (08/14/2015)
+
+1. Added shutdown() before close(); sockets only.
+
 2.0.8 (04/11/2015)
 
 1. Ignore SIGHUP.

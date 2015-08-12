@@ -41,7 +41,7 @@
 
 #define PIDFILE "/var/run/ez-ntpc.pid"
 
-#include <ez-common.h>
+#include "ez-common.h"
 
 void onalarm(int);
 
@@ -286,6 +286,7 @@ int main(int argc, char *argv[])
 
       if(goodtime == 0)
 	{
+	  shutdown(sock_fd, SHUT_RDWR);
 	  close(sock_fd);
 	  sock_fd = -1;
 
@@ -304,6 +305,7 @@ int main(int argc, char *argv[])
 
 	  if(errno == EINVAL || errno == ERANGE)
 	    {
+	      shutdown(sock_fd, SHUT_RDWR);
 	      close(sock_fd);
 	      sock_fd = -1;
 	      sleep(5);
@@ -311,6 +313,7 @@ int main(int argc, char *argv[])
 	    }
 	  else if(endptr == tmp)
 	    {
+	      shutdown(sock_fd, SHUT_RDWR);
 	      close(sock_fd);
 	      sock_fd = -1;
 	      sleep(5);
@@ -319,6 +322,7 @@ int main(int argc, char *argv[])
 	}
       else
 	{
+	  shutdown(sock_fd, SHUT_RDWR);
 	  close(sock_fd);
 	  sock_fd = -1;
 	  sleep(5);
@@ -337,6 +341,7 @@ int main(int argc, char *argv[])
 
 	  if(errno == EINVAL || errno == ERANGE)
 	    {
+	      shutdown(sock_fd, SHUT_RDWR);
 	      close(sock_fd);
 	      sock_fd = -1;
 	      sleep(5);
@@ -344,6 +349,7 @@ int main(int argc, char *argv[])
 	    }
 	  else if(endptr == tmp)
 	    {
+	      shutdown(sock_fd, SHUT_RDWR);
 	      close(sock_fd);
 	      sock_fd = -1;
 	      sleep(5);
@@ -352,6 +358,7 @@ int main(int argc, char *argv[])
 	}
       else
 	{
+	  shutdown(sock_fd, SHUT_RDWR);
 	  close(sock_fd);
 	  sock_fd = -1;
 	  sleep(5);
@@ -397,6 +404,7 @@ int main(int argc, char *argv[])
       else if(disable_all_logs == 0)
 	syslog(LOG_ERR, "gettimeofday() failed, %s", strerror(errno));
 
+      shutdown(sock_fd, SHUT_RDWR);
       close(sock_fd);
       sock_fd = -1;
       sleep(5);
