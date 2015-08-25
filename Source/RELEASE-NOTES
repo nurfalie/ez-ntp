@@ -1,4 +1,4 @@
-2.1.0 (08/25/2015)
+2.1.0 (08/26/2015)
 
 1. Corrected CLOSE_WAIT.
 2. Corrected use of the disable-all-logs option.
