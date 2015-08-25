@@ -1,7 +1,7 @@
 #!/bin/bash
 # A test script.
 
-for i in `seq 1 10`;
+for i in `seq 1 100`;
 do
-    nc -dv zebra 50000 1>/dev/null &
+    nc -dv 127.0.0.1 50000 1>/dev/null &
 done
