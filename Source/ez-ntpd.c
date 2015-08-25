@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 {
   char *endptr;
   char remote_host[128];
-  int conn_fd = -1;
+  int *conn_fd = 0;
   int err = 0;
   int i = 0;
   int n = 0;
@@ -220,20 +220,32 @@ int main(int argc, char *argv[])
 
   for(;;)
     {
+      conn_fd = malloc(sizeof(int));
+
+      if(!conn_fd)
+	{
+	  if(disable_all_logs == 0)
+	    syslog(LOG_ERR, "malloc() failed");
+
+	  sleep(1);
+	  continue;
+	}
+
       length = sizeof(client);
 
-      if((conn_fd = accept(sock_fd, &client, &length)) >= 0)
+      if((*conn_fd = accept(sock_fd, &client, &length)) >= 0)
 	{
-	  shutdown(conn_fd, SHUT_RD);
+	  shutdown(*conn_fd, SHUT_RD);
 
-	  if((rc = pthread_create(&thread, 0, thread_fun, &conn_fd)) != 0)
+	  if((rc = pthread_create(&thread, 0, thread_fun, conn_fd)) != 0)
 	    {
 	      if(disable_all_logs == 0)
 		syslog
 		  (LOG_ERR, "pthread_create() failed, error code = %d", rc);
 
-	      shutdown(conn_fd, SHUT_WR);
-	      close(conn_fd);
+	      shutdown(*conn_fd, SHUT_WR);
+	      close(*conn_fd);
+	      free(conn_fd);
 	    }
 	}
       else
@@ -241,6 +253,7 @@ int main(int argc, char *argv[])
 	  if(disable_all_logs == 0)
 	    syslog(LOG_ERR, "accept() failed, %s", strerror(errno));
 
+	  free(conn_fd);
 	  sleep(1);
 	}
     }
@@ -254,35 +267,18 @@ static void *thread_fun(void *arg)
   char wr_buffer[2 * sizeof(long unsigned int) + 64];
   int fd = -1;
   int n = 0;
-  int option_value = 0;
-  socklen_t length = 0;
   ssize_t remaining = 0;
   ssize_t rc = 0;
-  struct linger linger;
   struct timeval tp;
 
   if(arg)
     fd = *((int *) arg);
 
+  free(arg);
   pthread_detach(pthread_self());
 
   if(fd < 0)
     return 0;
-
-  linger.l_onoff = 1;
-  linger.l_linger = 0;
-  length = sizeof(linger);
-
-  if(setsockopt(fd, SOL_SOCKET, SO_LINGER, &linger, length) != 0)
-    if(disable_all_logs == 0)
-      syslog(LOG_ERR, "setsockopt() failed, %s", strerror(errno));
-
-  option_value = 0;
-  length = sizeof(option_value);
-
-  if(setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, &option_value, length) != 0)
-    if(disable_all_logs == 0)
-      syslog(LOG_ERR, "setsockopt() failed, %s", strerror(errno));
 
   /*
   ** Fetch the time.
