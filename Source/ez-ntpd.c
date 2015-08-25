@@ -254,6 +254,7 @@ static void *thread_fun(void *arg)
   char wr_buffer[2 * sizeof(long unsigned int) + 64];
   int fd = -1;
   int n = 0;
+  int option_value = 0;
   socklen_t length = 0;
   ssize_t remaining = 0;
   ssize_t rc = 0;
@@ -273,6 +274,13 @@ static void *thread_fun(void *arg)
   length = sizeof(linger);
 
   if(setsockopt(fd, SOL_SOCKET, SO_LINGER, &linger, length) != 0)
+    if(disable_all_logs == 0)
+      syslog(LOG_ERR, "setsockopt() failed, %s", strerror(errno));
+
+  option_value = 0;
+  length = sizeof(option_value);
+
+  if(setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, &option_value, length) != 0)
     if(disable_all_logs == 0)
       syslog(LOG_ERR, "setsockopt() failed, %s", strerror(errno));
 
