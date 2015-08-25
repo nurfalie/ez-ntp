@@ -1,3 +1,8 @@
+2.1.0 (08/25/2015)
+
+1. Corrected use of the disable-all-logs option.
+2. New manual pages.
+
 2.0.9 (08/14/2015)
 
 1. Added shutdown() before close(); sockets only.
