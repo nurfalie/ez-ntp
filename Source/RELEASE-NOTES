@@ -1,4 +1,4 @@
-2.1.0 (12/25/2015)
+2.1.1 (12/30/2015)
 
 1. Added the Papers directory.
 2. Added the Wshadow compiler option.
@@ -20,7 +20,7 @@
 
 2.0.7 (04/01/2015)
 
-1. Additional warnings.
+1. Additional compiler warnings.
 2. Prevent recursive onterm().
 3. Terminate if onexit() or onterm() cannot be registered.
 4. Use clang on OS X.
@@ -192,7 +192,7 @@
 
 1.6.0 (12/10/2006)
 
-1. Fixed an issue with the daemon. The --disable_all_logs flag now
+1. Fixed an issue with the daemon. The disable_all_logs flag now
    functions as intended.
 
 1.5.0 (12/04/2006)
@@ -201,7 +201,7 @@
 
 1.5.0 (12/03/2006)
 
-1. Introduced the flag --disable_conn_log to prevent logging of failed
+1. Introduced the flag disable_conn_log to prevent logging of failed
    connect() calls.
 
 1.4.0 (12/03/2006)
@@ -211,12 +211,12 @@
 
 1.3.0 (12/02/2006)
 
-1. Calling settimeofday() at least once.
+1. Call settimeofday() at least once.
 
 1.2.0 (12/01/2006)
 
 1. New option to disable the logging of successful events. Simply add
-   --disable_log to ez-ntpc.sh.
+   disable_log to ez-ntpc.sh.
 2. Replaced settimeofday() with adjtime().
 3. The files /var/run/ez-ntpc.pid and /var/run/ez-ntpd.pid have been replaced
    by ez-ntpc.lock and ez-ntpd.lock.
