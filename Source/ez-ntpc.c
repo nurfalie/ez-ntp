@@ -43,12 +43,7 @@
 
 #include "ez-common.h"
 
-void onalarm(int);
-
-void onalarm(int notused)
-{
-  (void) notused;
-}
+static void onalarm(int);
 
 int main(int argc, char *argv[])
 {
@@ -411,4 +406,9 @@ int main(int argc, char *argv[])
     }
 
   return EXIT_SUCCESS;
+}
+
+static void onalarm(int notused)
+{
+  (void) notused;
 }
