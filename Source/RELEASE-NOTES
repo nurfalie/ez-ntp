@@ -1,3 +1,11 @@
+2.2.0 (06/13/2016)
+
+1. Consider the trip time in the client.
+   a. Gather the current time before issuing connect().
+   b. If the received time string is deemed correct, gather the current time.
+   c. Adjust the contents of server_tp by (b - a) / 2.
+2. onalarm() should be a static function.
+
 2.1.1 (12/30/2015)
 
 1. Added the Papers directory.

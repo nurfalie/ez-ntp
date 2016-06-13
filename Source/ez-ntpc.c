@@ -56,9 +56,13 @@ int main(int argc, char *argv[])
   int goodtime = 0;
   int i = 0;
   int n = 0;
+  int timeofday_after_recv = 0;
+  int timeofday_before_connect = 0;
   long port_num = -1;
   ssize_t rc = 0;
   struct stat st;
+  struct timeval after_recv_tp;
+  struct timeval before_connect_tp;
   struct timeval home_tp;
   struct timeval delta_tp;
   struct timeval server_tp;
@@ -210,6 +214,11 @@ int main(int argc, char *argv[])
 	}
 
       alarm(8);
+      timeofday_after_recv = 0;
+      timeofday_before_connect = 0;
+
+      if(gettimeofday(&before_connect_tp, 0) == 0)
+	timeofday_before_connect = 1;
 
       if(connect(sock_fd, (const struct sockaddr *) &servaddr,
 		 sizeof(servaddr)) == -1)
@@ -277,7 +286,12 @@ int main(int argc, char *argv[])
 	}
 
       if(strnlen(buffer, sizeof(buffer)) > 2 && strstr(buffer, "\r\n") != 0)
-	goodtime = 1;
+	{
+	  goodtime = 1;
+
+	  if(gettimeofday(&after_recv_tp, 0) == 0)
+	    timeofday_after_recv = 1;
+	}
 
       if(goodtime == 0)
 	{
@@ -362,6 +376,18 @@ int main(int argc, char *argv[])
 
       if(gettimeofday(&home_tp, 0) == 0)
 	{
+	  if(timeofday_after_recv == 1 && timeofday_before_connect == 1)
+	    {
+	      /*
+	      ** Let's consider the trip time.
+	      */
+
+	      server_tp.tv_sec += (after_recv_tp.tv_sec -
+				   before_connect_tp.tv_sec) / 2;
+	      server_tp.tv_usec += (after_recv_tp.tv_usec -
+				    before_connect_tp.tv_usec) / 2;
+	    }
+
 	  if(labs(home_tp.tv_sec - server_tp.tv_sec) >= 1)
 	    {
 	      if(labs(home_tp.tv_sec - server_tp.tv_sec) <= 15)
