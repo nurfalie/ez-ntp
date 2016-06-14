@@ -396,10 +396,8 @@ int main(int argc, char *argv[])
 		  if(settimeofday(&server_tp, 0) != 0)
 		    {
 		      if(disable_all_logs == 0)
-			syslog(LOG_ERR, "settimeofday() failed, %s (%ld %ld)",
-			       strerror(errno),
-			       server_tp.tv_sec,
-			       server_tp.tv_usec);
+			syslog(LOG_ERR, "settimeofday() failed, %s",
+			       strerror(errno));			       
 		    }
 		  else if(disable_all_logs == 0)
 		    syslog(LOG_INFO, "%s",
@@ -410,8 +408,7 @@ int main(int argc, char *argv[])
 	    }
 	  else if(labs(home_tp.tv_usec - server_tp.tv_usec) >= 5)
 	    {
-	      delta_tp.tv_sec = server_tp.tv_sec - home_tp.tv_sec;
-	      delta_tp.tv_usec = server_tp.tv_usec - home_tp.tv_usec;
+	      timersub(&server_tp, &home_tp, &delta_tp);
 
 	      if(adjtime(&delta_tp, 0) != 0)
 		{
