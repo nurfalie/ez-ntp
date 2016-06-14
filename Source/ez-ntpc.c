@@ -66,6 +66,7 @@ int main(int argc, char *argv[])
   struct timeval home_tp;
   struct timeval delta_tp;
   struct timeval server_tp;
+  struct timeval temp_tp;
   struct sigaction act;
   struct sockaddr_in servaddr;
 
@@ -382,10 +383,10 @@ int main(int argc, char *argv[])
 	      ** Let's consider the trip time.
 	      */
 
-	      server_tp.tv_sec += (after_recv_tp.tv_sec -
-				   before_connect_tp.tv_sec) / 2;
-	      server_tp.tv_usec += (after_recv_tp.tv_usec -
-				    before_connect_tp.tv_usec) / 2;
+	      timersub(&after_recv_tp, &before_connect_tp, &temp_tp);
+	      temp_tp.tv_sec = temp_tp.tv_sec / 2;
+	      temp_tp.tv_usec = temp_tp.tv_usec / 2;
+	      timeradd(&server_tp, &temp_tp, &server_tp);
 	    }
 
 	  if(labs(home_tp.tv_sec - server_tp.tv_sec) >= 1)
@@ -395,8 +396,10 @@ int main(int argc, char *argv[])
 		  if(settimeofday(&server_tp, 0) != 0)
 		    {
 		      if(disable_all_logs == 0)
-			syslog(LOG_ERR, "settimeofday() failed, %s",
-			       strerror(errno));
+			syslog(LOG_ERR, "settimeofday() failed, %s (%ld %ld)",
+			       strerror(errno),
+			       server_tp.tv_sec,
+			       server_tp.tv_usec);
 		    }
 		  else if(disable_all_logs == 0)
 		    syslog(LOG_INFO, "%s",

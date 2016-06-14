@@ -1,6 +1,8 @@
 2.2.1 (06/14/2016)
 
 1. Decreased non-communications sleep() values.
+2. timeradd() and timersub() should be used for operating on timeval
+   structures.
 
 2.2.0 (06/13/2016)
 
