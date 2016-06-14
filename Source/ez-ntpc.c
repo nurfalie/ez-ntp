@@ -302,7 +302,7 @@ int main(int argc, char *argv[])
 	  if(disable_all_logs == 0)
 	    syslog(LOG_ERR, "incorrect time (%s)", buffer);
 
-	  sleep(5);
+	  sleep(1);
 	  continue;
 	}
 
@@ -317,7 +317,7 @@ int main(int argc, char *argv[])
 	      shutdown(sock_fd, SHUT_RDWR);
 	      close(sock_fd);
 	      sock_fd = -1;
-	      sleep(5);
+	      sleep(1);
 	      continue;
 	    }
 	  else if(endptr == tmp)
@@ -325,7 +325,7 @@ int main(int argc, char *argv[])
 	      shutdown(sock_fd, SHUT_RDWR);
 	      close(sock_fd);
 	      sock_fd = -1;
-	      sleep(5);
+	      sleep(1);
 	      continue;
 	    }
 	}
@@ -334,7 +334,7 @@ int main(int argc, char *argv[])
 	  shutdown(sock_fd, SHUT_RDWR);
 	  close(sock_fd);
 	  sock_fd = -1;
-	  sleep(5);
+	  sleep(1);
 	  continue;
 	}
 
@@ -353,7 +353,7 @@ int main(int argc, char *argv[])
 	      shutdown(sock_fd, SHUT_RDWR);
 	      close(sock_fd);
 	      sock_fd = -1;
-	      sleep(5);
+	      sleep(1);
 	      continue;
 	    }
 	  else if(endptr == tmp)
@@ -361,7 +361,7 @@ int main(int argc, char *argv[])
 	      shutdown(sock_fd, SHUT_RDWR);
 	      close(sock_fd);
 	      sock_fd = -1;
-	      sleep(5);
+	      sleep(1);
 	      continue;
 	    }
 	}
@@ -370,7 +370,7 @@ int main(int argc, char *argv[])
 	  shutdown(sock_fd, SHUT_RDWR);
 	  close(sock_fd);
 	  sock_fd = -1;
-	  sleep(5);
+	  sleep(1);
 	  continue;
 	}
 
@@ -428,7 +428,7 @@ int main(int argc, char *argv[])
       shutdown(sock_fd, SHUT_RDWR);
       close(sock_fd);
       sock_fd = -1;
-      sleep(5);
+      sleep(1);
     }
 
   return EXIT_SUCCESS;
