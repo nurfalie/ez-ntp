@@ -330,6 +330,15 @@ static void *thread_fun(void *arg)
 
   shutdown(fd, SHUT_WR);
 
+  if(so_linger >= 0)
+    {
+      struct linger sol;
+
+      sol.l_onoff = 1;
+      sol.l_linger = so_linger;
+      setsockopt(fd, SOL_SOCKET, SO_LINGER, &sol, sizeof(sol));
+    }
+
   if(close(fd) != 0)
     if(disable_all_logs == 0)
       syslog(LOG_ERR, "close() failed, %s", strerror(errno));
