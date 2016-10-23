@@ -62,10 +62,9 @@ int main(int argc, char *argv[])
 
   for(i = 0; i < argc; i++)
     if(argv && argv[i] && strcmp(argv[i], "--disable-all-logs") == 0)
-      {
-	disable_all_logs = 1;
-	break;
-      }
+      disable_all_logs = 1;
+    else if(argv && argv[i] && strcmp(argv[i], "--shutdown-before-close") == 0)
+      shutdown_before_close = 1;
 
   if(disable_all_logs == 0)
     {
@@ -122,6 +121,18 @@ int main(int argc, char *argv[])
 
 	    fprintf(stderr, "%s", "Undefined port, exiting.\n");
 	    return EXIT_FAILURE;
+	  }
+      }
+    else if(strcmp(*argv, "--so-linger") == 0)
+      {
+	argv++;
+
+	if(*argv != 0)
+	  {
+	    so_linger = (int) strtol(*argv, &endptr, 10);
+
+	    if(errno == EINVAL || errno == ERANGE || endptr == *argv)
+	      so_linger = -1;
 	  }
       }
 
@@ -243,8 +254,7 @@ int main(int argc, char *argv[])
 		syslog
 		  (LOG_ERR, "pthread_create() failed, error code = %d", rc);
 
-	      shutdown(*conn_fd, SHUT_WR);
-	      close(*conn_fd);
+	      ez_close(*conn_fd);
 	      free(conn_fd);
 	    }
 	}

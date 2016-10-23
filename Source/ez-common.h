@@ -17,15 +17,35 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#define VERSION 2.2.1
+#define VERSION 2.3.0
 
+int disable_all_logs = 0;
+int shutdown_before_close = 0;
+int so_linger = -1;
 int sock_fd = -1;
 int terminated = 0;
-int disable_all_logs = 0;
+void ez_close(const int fd);
 void onexit(void);
 void onterm(int);
 void preconnect_init(void);
 void turn_into_daemon(void);
+
+void ez_close(const int fd)
+{
+  if(shutdown_before_close)
+    shutdown(fd, SHUT_RDWR);
+
+  if(so_linger >= 0)
+    {
+      struct linger sol;
+
+      sol.l_onoff = 1;
+      sol.l_linger = so_linger;
+      setsockopt(fd, SOL_SOCKET, SO_LINGER, &sol, sizeof(sol));
+    }
+
+  close(fd);
+}
 
 void onexit(void)
 {

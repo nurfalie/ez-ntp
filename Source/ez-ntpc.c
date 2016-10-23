@@ -72,10 +72,9 @@ int main(int argc, char *argv[])
 
   for(i = 0; i < argc; i++)
     if(argv && argv[i] && strcmp(argv[i], "--disable-all-logs") == 0)
-      {
-	disable_all_logs = 1;
-	break;
-      }
+      disable_all_logs = 1;
+    else if(argv && argv[i] && strcmp(argv[i], "--shutdown-before-close") == 0)
+      shutdown_before_close = 1;
 
   if(disable_all_logs == 0)
     {
@@ -142,6 +141,18 @@ int main(int argc, char *argv[])
 
 	    fprintf(stderr, "%s", "Undefined port, exiting.\n");
 	    return EXIT_FAILURE;
+	  }
+      }
+    else if(strcmp(*argv, "--so-linger") == 0)
+      {
+	argv++;
+
+	if(*argv != 0)
+	  {
+	    so_linger = (int) strtol(*argv, &endptr, 10);
+
+	    if(errno == EINVAL || errno == ERANGE || endptr == *argv)
+	      so_linger = -1;
 	  }
       }
 
@@ -296,8 +307,7 @@ int main(int argc, char *argv[])
 
       if(goodtime == 0)
 	{
-	  shutdown(sock_fd, SHUT_RDWR);
-	  close(sock_fd);
+	  ez_close(sock_fd);
 	  sock_fd = -1;
 
 	  if(disable_all_logs == 0)
@@ -315,16 +325,14 @@ int main(int argc, char *argv[])
 
 	  if(errno == EINVAL || errno == ERANGE)
 	    {
-	      shutdown(sock_fd, SHUT_RDWR);
-	      close(sock_fd);
+	      ez_close(sock_fd);
 	      sock_fd = -1;
 	      sleep(1);
 	      continue;
 	    }
 	  else if(endptr == tmp)
 	    {
-	      shutdown(sock_fd, SHUT_RDWR);
-	      close(sock_fd);
+	      ez_close(sock_fd);
 	      sock_fd = -1;
 	      sleep(1);
 	      continue;
@@ -332,8 +340,7 @@ int main(int argc, char *argv[])
 	}
       else
 	{
-	  shutdown(sock_fd, SHUT_RDWR);
-	  close(sock_fd);
+	  ez_close(sock_fd);
 	  sock_fd = -1;
 	  sleep(1);
 	  continue;
@@ -351,16 +358,14 @@ int main(int argc, char *argv[])
 
 	  if(errno == EINVAL || errno == ERANGE)
 	    {
-	      shutdown(sock_fd, SHUT_RDWR);
-	      close(sock_fd);
+	      ez_close(sock_fd);
 	      sock_fd = -1;
 	      sleep(1);
 	      continue;
 	    }
 	  else if(endptr == tmp)
 	    {
-	      shutdown(sock_fd, SHUT_RDWR);
-	      close(sock_fd);
+	      ez_close(sock_fd);
 	      sock_fd = -1;
 	      sleep(1);
 	      continue;
@@ -368,8 +373,7 @@ int main(int argc, char *argv[])
 	}
       else
 	{
-	  shutdown(sock_fd, SHUT_RDWR);
-	  close(sock_fd);
+	  ez_close(sock_fd);
 	  sock_fd = -1;
 	  sleep(1);
 	  continue;
@@ -397,7 +401,7 @@ int main(int argc, char *argv[])
 		    {
 		      if(disable_all_logs == 0)
 			syslog(LOG_ERR, "settimeofday() failed, %s",
-			       strerror(errno));			       
+			       strerror(errno));
 		    }
 		  else if(disable_all_logs == 0)
 		    syslog(LOG_INFO, "%s",
@@ -425,8 +429,7 @@ int main(int argc, char *argv[])
       else if(disable_all_logs == 0)
 	syslog(LOG_ERR, "gettimeofday() failed, %s", strerror(errno));
 
-      shutdown(sock_fd, SHUT_RDWR);
-      close(sock_fd);
+      ez_close(sock_fd);
       sock_fd = -1;
       sleep(1);
     }

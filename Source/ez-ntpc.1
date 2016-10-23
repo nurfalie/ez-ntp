@@ -1,4 +1,4 @@
-.TH ez-ntpc 1 "August 25, 2015"
+.TH ez-ntpc 1 "October 23, 2016"
 .SH NAME
 ez-ntpc
 .SH SYNOPSIS
@@ -16,6 +16,12 @@ The IP address of the remote server.
 .TP
 .BI --port " PORT"
 The IP port of the remote server.
+.TP
+.BI --shutdown-before-close
+Issue shutdown() before close(). Disabled by default.
+.TP
+.BI --so-linger " timeout"
+Set the SO_LINGER socket option to the specified value before issuing close().
 .SH NOTES
 Computers should be in the same time zone. Please use only trusted time sources.
 .SH AUTHOR(S)

@@ -1,3 +1,8 @@
+2.3.0 (10/23/2016)
+
+1. New so-linger option.
+2. Optional shutdown() before close() via shutdown-before-close option.
+
 2.2.1 (06/14/2016)
 
 1. Decreased non-communications sleep() values.
